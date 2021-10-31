@@ -136,10 +136,10 @@ function exchangeSeashells()
 	}
 
 	writeToLog("Exchanging seashells...");
-	exchangeItems("fisherman", "seashell");
+	exchangeItems("fisherman", "seashell", 20);
 }
 
-function exchangeItems(npcName, itemName, onComplete)
+function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
 	setState("Exchanging");
 
@@ -149,11 +149,16 @@ function exchangeItems(npcName, itemName, onComplete)
 
 		setTimeout(() =>
 		{
-			setState("Exchanging", false);
+			let item = character.items[locate_item("seashell")];
 
-			if (onComplete)
+			if (!item || item.q < minExchange)
 			{
-				onComplete();
+				setState("Town");
+
+				if (onComplete)
+				{
+					onComplete();
+				}
 			}
 
 		}, 5000);
