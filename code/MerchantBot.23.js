@@ -208,9 +208,18 @@ function townInterval()
 
 	if (!character.q.upgrade && !character.q.compound)
 	{
-		craftUpgrades();
-		craftCompounds();
-		exchangeSeashells();
+		let busy = false;
+		busy = craftUpgrades();
+
+		if (!busy)
+		{
+			busy = craftCompounds();
+        }
+
+		if (!busy)
+		{
+			busy = exchangeSeashells();
+        }
 	}
 }
 

@@ -2,13 +2,18 @@
 
 function craftUpgrades()
 {
+	let upgrading = false;
+
 	for (let i = 1; i <= 10; i++)
 	{
 		if (craftUpgrade(i))
 		{
+			upgrading = true;
 			break;
 		}
 	}
+
+	return upgrading;
 }
 
 function craftUpgrade(targetUpgradeLevel)
@@ -53,13 +58,18 @@ function craftUpgrade(targetUpgradeLevel)
 
 function craftCompounds(levelToStop = 3)
 {
+	let crafting = false;
+
 	for (let i = 0; i < levelToStop; i++)
 	{
 		if (craftCompound(i))
 		{
+			crafting = true;
 			break;
 		}
 	}
+
+	return crafting;
 }
 
 function craftCompound(levelToUse)
