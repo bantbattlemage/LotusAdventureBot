@@ -91,6 +91,9 @@ function onMerchantStateChanged(newState)
 	
 	switch (newState)
 	{
+		case "Exchanging":
+			exchangeSeashells();
+			break;
 		case "Town":
 			enterTownMode();
 			break;
@@ -143,6 +146,8 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
 	let action = () =>
 	{
+		setState("Exchanging");
+
 		exchange(locate_item_greatest_quantity(itemName));
 
 		setTimeout(() =>
@@ -168,6 +173,8 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 	}
 	else
 	{
+		setState("Traveling");
+
 		smart_move(npcName, () =>
 		{
 			action();
