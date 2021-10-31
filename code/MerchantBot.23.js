@@ -149,13 +149,20 @@ function exchangeSeashells()
 
 function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
-	let action = () =>
+	if (Intervals["Exhcange"] != null)
 	{
-		setState("Exchanging");
+		return;
+    }
+
+	setState("Exchanging");
+
+	smart_move(npcName, () =>
+	{
+		Intervals["Exchange"] = null;
 
 		exchange(locate_item_greatest_quantity(itemName));
 
-		setTimeout(() =>
+		Intervals["Exchange"] = setTimeout(() =>
 		{
 			let item = character.items[locate_item_greatest_quantity(itemName)];
 
@@ -168,23 +175,12 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 					onComplete();
 				}
 			}
-
+			else
+			{
+				exchangeItems(npcName, itemName, minExchange, onComplete);
+            }
 		}, 5000);
-	}
-
-	if (parent.entities[npcName])
-	{
-		action();
-	}
-	else
-	{
-		setState("Traveling");
-
-		smart_move(npcName, () =>
-		{
-			action();
-		});
-    }
+	});
 }
 
 function townInterval()
