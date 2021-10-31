@@ -92,7 +92,6 @@ function onMerchantStateChanged(newState)
 	switch (newState)
 	{
 		case "Exchanging":
-			exchangeSeashells();
 			break;
 		case "Town":
 			enterTownMode();
