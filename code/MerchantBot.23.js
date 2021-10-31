@@ -196,18 +196,17 @@ function townInterval()
 	
 	if(!isInTown())
 	{
-		exchangeSeashells();
 		return;
 	}
+
+	sellVendorTrash();
 
 	if (!character.q.upgrade && !character.q.compound)
 	{
 		craftUpgrades();
 		craftCompounds();
+		exchangeSeashells();
 	}
-	
-	sellVendorTrash();
-	exchangeSeashells();
 }
 
 function checkMluck(target)
