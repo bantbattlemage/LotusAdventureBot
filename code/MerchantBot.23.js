@@ -141,8 +141,6 @@ function exchangeSeashells()
 
 function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
-	setState("Exchanging");
-
 	let action = () =>
 	{
 		exchange(locate_item_greatest_quantity(itemName));
@@ -153,7 +151,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 			if (!item || (item && item.q < minExchange))
 			{
-				setState("Town");
+				setState("Idle");
 
 				if (onComplete)
 				{
