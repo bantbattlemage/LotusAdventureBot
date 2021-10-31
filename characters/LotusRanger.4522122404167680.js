@@ -18,8 +18,3 @@ function loadCharacter()
 	load_code("RangerLotus");
 	Flags["Farming"] = true;
 }
-
-function characterCombat()
-{
-
-}

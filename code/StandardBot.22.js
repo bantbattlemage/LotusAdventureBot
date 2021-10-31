@@ -391,10 +391,10 @@ function startCombatInterval()
 
 	Intervals["Combat"] = setInterval(() =>
 	{
-		positionRoutine();
-		
 		let target = findPriorityTarget();
-		
+
+		positionRoutine();
+
 		if(!target)
 		{
 			findTarget(Settings["FarmMonster"]);
@@ -483,7 +483,7 @@ function findPriorityTarget()
 	let currentTarget = get_nearest_monster({target: character});
 	if(currentTarget)
 	{
-		return currentTarget
+		return currentTarget;
 	}
 	
 	for(let index in Settings["PriorityTargets"])
