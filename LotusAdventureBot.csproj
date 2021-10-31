@@ -81,6 +81,7 @@
     <Content Include="code\Depricated\main.2.js" />
     <Content Include="code\MerchantBot.23.js" />
     <Content Include="code\Depricated\merchantLogic.6.js" />
+    <Content Include="code\Mover.js" />
     <Content Include="code\Positioning.25.js" />
     <Content Include="code\Depricated\priestLogic.7.js" />
     <Content Include="code\Depricated\rangerLogic.8.js" />

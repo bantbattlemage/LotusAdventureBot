@@ -132,7 +132,7 @@ function exchangeSeashells()
 	exchangeItems("fisherman", "seashell", 20);
 }
 
-function exchangeItems(npcName, itemName, minExchange, onComplete)
+async function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
 	if (Intervals["Exhcange"] != null)
 	{
@@ -141,37 +141,35 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 	setState("Exchanging");
 
-	smart_move(npcName, () =>
+	await Mover.smart_move(npcName);
+
+	Intervals["Exchange"] = null;
+
+	exchange(locate_item_greatest_quantity(itemName));
+
+	Intervals["Exchange"] = setTimeout(() =>
 	{
-		Intervals["Exchange"] = null;
-
-		exchange(locate_item_greatest_quantity(itemName));
-
-		Intervals["Exchange"] = setTimeout(() =>
+		if (!getState("Exchanging"))
 		{
-			if (!getState("Exchanging"))
+			Intervals["Exchange"] = null;
+			return;
+		}
+
+		let item = character.items[locate_item_greatest_quantity(itemName)];
+
+		if (!item || (item && item.q < minExchange))
+		{
+			setState("Idle");
+
+			if (onComplete)
 			{
-				Intervals["Exchange"] = null;
-				return;
-            }
-
-			let item = character.items[locate_item_greatest_quantity(itemName)];
-
-			if (!item || (item && item.q < minExchange))
-			{
-				setState("Idle");
-
-				if (onComplete)
-				{
-					onComplete();
-				}
+				onComplete();
 			}
-			else
-			{
-				exchangeItems(npcName, itemName, minExchange, onComplete);
-            }
-		}, 5000);
-	});
+		}
+		else {
+			exchangeItems(npcName, itemName, minExchange, onComplete);
+		}
+	}, 5000);
 }
 
 function townInterval()
@@ -215,7 +213,7 @@ function checkMluck(target)
 	return /*(target.s.mluck && target.s.mluck.f === ) ||*/ (target.s.mluck && target.s.mluck.ms > mLuckDuration * 0.25);
 }
 
-function enterTownMode()
+async function enterTownMode()
 {
 	if (character.map !== Settings["HomeMap"])
 	{
@@ -236,11 +234,10 @@ function enterTownMode()
 		} 
 		else
 		{
-			smart_move(Settings["HomeCoords"], () =>
-			{
-				log("Starting town interval.");
-				Intervals["TownInterval"] = setInterval(townInterval, 250);
-			});
+			await Mover.smart_moveX(Settings["HomeCoords"];
+
+			log("Starting town interval.");
+			Intervals["TownInterval"] = setInterval(townInterval, 250);
 		}
 	}
 }

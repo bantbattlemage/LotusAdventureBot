@@ -448,7 +448,7 @@ function autoAttack(target)
 	return false;
 }
 
-function approach(target)
+async function approach(target)
 {
 	if(is_moving(character) || smart.moving || !target)
 	{
@@ -469,11 +469,11 @@ function approach(target)
 		
 		if(distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
 		{
-			move(adjustment.x, adjustment.y);
+			await Move.smart_moveX(adjustment.x, adjustment.y);
 		}
 		else
 		{
-			smart_move(adjustment);
+			await Mover.smart_moveX(adjustment);
 		}
 	}
 }
@@ -555,7 +555,7 @@ function beginFarming()
 	});
 }
 
-function travelTo(map, coords=null, onComplete=()=>{})
+async function travelTo(map, coords=null, onComplete=()=>{})
 {
 	let log = character.name + " traveling to " + map;
 	if(coords != null)
@@ -569,40 +569,36 @@ function travelTo(map, coords=null, onComplete=()=>{})
 	
 	if (character.map !== map)
 	{
-		smart_move(map, () =>
+		if (coords != null)
 		{
-			if(coords != null)
-			{
-				smart_move(coords, () =>
-				{
-					setState("Traveling", false);
-					onComplete();
-				});		
-			}
-			else
-			{
-				setState("Traveling", false);
-				onComplete();
-			}
-		});
+			await Mover.smart_moveX(coords.x, coords.y, map);
+
+			setState("Traveling", false);
+			onComplete();
+		}
+		else
+		{
+			await Mover.smart_moveX(map);
+
+			setState("Traveling", false);
+			onComplete();
+		}
 	} 
 	else
 	{
 		if(coords == null)
 		{
-			smart_move(map, () =>
-			{
-				setState("Traveling", false);
-				onComplete();
-			});			
+			await Mover.smart_moveX(map);
+
+			setState("Traveling", false);
+			onComplete();
 		}
 		else
 		{
-			smart_move(coords, () =>
-			{
-				setState("Traveling", false);
-				onComplete();
-			});		
+			await Move.smart_moveX(coords.x, coords.y);
+
+			setState("Traveling", false);
+			onComplete();
 		}
 	}	
 }
