@@ -114,20 +114,6 @@ function onMerchantIdle()
 	}
 }
 
-function sellVendorTrash()
-{
-	for (let i = 0; i < character.items.length; i++)
-	{
-		let item = character.items[i];
-
-		if (item && Settings["VendorTrash"].includes(item.name) && !isShiny(item))
-		{
-			log("Selling " + item.name + " to vendor.");
-			sell(i, item.q);
-		}
-	}
-}
-
 function exchangeSeashells()
 {
 	if (smart.moving)

@@ -10,7 +10,8 @@ function loadCharacter()
 		"PriorityTargets": ["phoenix","goldenbat"],
 		"Avoid": ["bigbird"],
 		"Party":["LotusRanger","RangerLotus","LotusMage","LotusMerch"],
-		"TetherRadius": 100
+		"TetherRadius": 100,
+		"VendorTrash": VendorTrash
 	};
 
 	startBotCore(settings);

@@ -33,10 +33,6 @@ function loadCharacter()
 			"strearring": defaultCompoundLevel,
 			"wbook0": 3
 		};
-	let vendorTrash = 
-		[
-			"stinger","beewings","poison","sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing"
-		];
 	let pontyList = 
 		[
 			"ascale", "cscale", "pleather", "bfur", "seashell", "leather", "firestaff", "suckerpunch", "t2dexamulet", "t2intamulet", "rabbitsfoot", "ringofluck", "cape", 
@@ -54,8 +50,8 @@ function loadCharacter()
 			"HomeCoords": {x: -118, y: 11},
 			"HoldItems": holdItems,
 			"UpgradeList": upgradeList,
-			"CompoundList": compoundList,
-			"VendorTrash": vendorTrash,
+		"CompoundList": compoundList,
+		"VendorTrash": VendorTrash,
 			"PontyList": pontyList,
 		};
 	
