@@ -35,7 +35,7 @@ function loadCharacter()
 		};
 	let vendorTrash = 
 		[
-			"stinger","beewings","poison","sstinger", "ringsj", "cclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "cshell", "bwing"
+			"stinger","beewings","poison","sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing"
 		];
 	let pontyList = 
 		[

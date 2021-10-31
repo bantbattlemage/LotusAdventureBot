@@ -49,13 +49,19 @@ function onMerchantCM(data)
 	switch (data.message)
 	{
 		case "NeedElixir":
+
 			if (getState("Delivering") || getElixirInventorySlot(data.elixir) == null)
 			{
 				break;
 			}
+
 			deliverElixir(sender, data);
+
+			break;
+
 		case "NeedPotions":
-			if(getState("Delivering"))
+
+			if (getState("Delivering"))
 			{
 				break;
 			}
@@ -67,6 +73,13 @@ function onMerchantCM(data)
 			{
 				setState("NeedPotions");	
 			}
+
+			break;
+
+		default:
+
+			log("Unknown command");
+
 			break;
 	}
 }
@@ -253,7 +266,7 @@ function deliverElixir(deliverToName, data)
 	deliverTo(deliverToName, data, ()=>
 	{
 		writeToLog("Delivering " + data.elixir + " to " + deliverToName);
-		send_item(deliverToName, getElixirInventorySlot(data.elixir), 1);
+		send_item(deliverToName, getElixirInventorySlot(data.elixir), 3);
 	});
 }
 
