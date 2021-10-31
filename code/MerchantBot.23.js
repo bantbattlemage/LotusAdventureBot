@@ -145,11 +145,11 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 	let action = () =>
 	{
-		exchange(locate_item(itemName));
+		exchange(locate_item_greatest_quantity(itemName));
 
 		setTimeout(() =>
 		{
-			let item = character.items[locate_item(itemName)];
+			let item = character.items[locate_item_greatest_quantity(itemName)];
 
 			if (!item || item.q < minExchange)
 			{

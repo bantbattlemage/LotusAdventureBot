@@ -640,6 +640,21 @@ function getState(state=null)
 	return false;
 }
 
+function locate_item_greatest_quantity(name)
+{
+	let location = -1;
+
+	for (var i = 0; i < character.items.length; i++)
+	{
+		if (character.items[i] && character.items[i].name == name && character.items[location].q < character.items[i].q)
+		{
+			location = i;
+        }
+	}
+
+	return location;
+}
+
 function loadSettings(settings)
 {
 	for (let s in settings)
