@@ -130,18 +130,16 @@ function exchangeSeashells()
 {
 	let seashells = character.items[locate_item("seashell")];
 
-	if (!seashells || seashells.q < 100)
+	if (!seashells)
 	{
 		return;
 	}
 
 	writeToLog("Exchanging seashells...");
-
-	let exchanges = Math.floor(seashells.q / 20);
-	exchangeItems("fisherman", "seashell", exchanges);
+	exchangeItems("fisherman", "seashell");
 }
 
-function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
+function exchangeItems(npcName, itemName, onComplete)
 {
 	setState("Exchanging");
 
@@ -149,10 +147,12 @@ function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
 	{
 		exchange(locate_item(itemName));
 
-		setTimeout(() => {
+		setTimeout(() =>
+		{
 			setState("Exchanging", false);
 
-			if (onComplete) {
+			if (onComplete)
+			{
 				onComplete();
 			}
 
