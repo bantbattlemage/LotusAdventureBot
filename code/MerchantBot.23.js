@@ -163,6 +163,12 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 		Intervals["Exchange"] = setTimeout(() =>
 		{
+			if (!getState("Exchanging"))
+			{
+				Intervals["Exchange"] = null;
+				return;
+            }
+
 			let item = character.items[locate_item_greatest_quantity(itemName)];
 
 			if (!item || (item && item.q < minExchange))
