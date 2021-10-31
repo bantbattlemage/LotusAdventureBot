@@ -154,8 +154,6 @@ function checkElixirBuff()
 		return;
 	}
 	
-	return;
-	
 	let buffToExpect = null;
 
 	if (character.ctype === "priest" || character.ctype === "mage")
