@@ -145,21 +145,31 @@ function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
 {
 	setState("Exchanging");
 
-	smart_move(npcName, () =>
+	let action = () =>
 	{
 		exchange(locate_item(itemName));
 
-		setTimeout(() =>
-		{
+		setTimeout(() => {
 			setState("Exchanging", false);
 
-			if (onComplete)
-			{
+			if (onComplete) {
 				onComplete();
 			}
 
 		}, 5000);
-	});
+	}
+
+	if (parent.entities[npcName])
+	{
+		action();
+	}
+	else
+	{
+		smart_move(npcName, () =>
+		{
+			action();
+		});
+    }
 }
 
 function townInterval()
