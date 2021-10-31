@@ -149,7 +149,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 		setTimeout(() =>
 		{
-			let item = character.items[locate_item("seashell")];
+			let item = character.items[locate_item(itemName)];
 
 			if (!item || item.q < minExchange)
 			{
