@@ -117,7 +117,8 @@ function exchangeSeashells()
 {
 	let seashells = character.items[locate_item("seashell")];
 
-	if (!seashells || seashells.q < 20) {
+	if (!seashells || seashells.q < 100)
+	{
 		return;
 	}
 
@@ -151,7 +152,7 @@ function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
 					}
 				}
 
-			}, 10000 * (i));
+			}, 5000 * (i));
 		}
 	});
 }
