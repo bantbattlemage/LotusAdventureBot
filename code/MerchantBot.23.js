@@ -85,7 +85,7 @@ function onMerchantStateChanged(newState)
 			if(Intervals["Deliver"])
 			{
 				Flags["DeliverTarget"] = null;
-				clearInterval(Intervals["Deliver"]);				
+				clearInterval(Intervals["Deliver"]);
 			}
 			break;
 	}
@@ -95,10 +95,9 @@ function onMerchantIdle()
 {
 	if(isInTown())
 	{
-		setState("Town");		
+		setState("Town");
 	}
 }
-
 
 function sellVendorTrash()
 {
@@ -112,6 +111,49 @@ function sellVendorTrash()
 			sell(i, item.q);
 		}
 	}
+}
+
+function exchangeSeashells()
+{
+	let seashells = character.items[locate_item("seashell")];
+
+	if (!seashells || seashells.q < 20) {
+		return;
+	}
+
+	writeToLog("Exchanging seashells...");
+
+	let exchanges = Math.floor(seashells.q / 20);
+	exchangeItems("fisherman", "seashell", exchanges);
+}
+
+function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
+{
+	setState("Exchanging");
+
+	smart_move(npcName, () =>
+	{
+		for (let i = 0; i < numberOfExchanges; i++)
+		{
+			let count = i;
+
+			setTimeout((x = count) =>
+			{
+				exchange(locate_item(itemName));
+
+				if (x === numberOfExchanges - 1)
+				{
+					setState("Exchanging", false);
+
+					if (onComplete)
+					{
+						onComplete();
+					}
+				}
+
+			}, 10000 * (i));
+		}
+	});
 }
 
 function townInterval()
@@ -137,6 +179,7 @@ function townInterval()
 	}
 	
 	sellVendorTrash();
+	exchangeSeashells();
 }
 
 function checkMluck(target)
