@@ -147,26 +147,18 @@ function exchangeItems(npcName, itemName, numberOfExchanges, onComplete)
 
 	smart_move(npcName, () =>
 	{
-		for (let i = 0; i < numberOfExchanges; i++)
+		exchange(locate_item(itemName));
+
+		setTimeout(() =>
 		{
-			let count = i;
+			setState("Exchanging", false);
 
-			setTimeout((x = count) =>
+			if (onComplete)
 			{
-				exchange(locate_item(itemName));
+				onComplete();
+			}
 
-				if (x === numberOfExchanges - 1)
-				{
-					setState("Exchanging", false);
-
-					if (onComplete)
-					{
-						onComplete();
-					}
-				}
-
-			}, 5000 * (i));
-		}
+		}, 5000);
 	});
 }
 
