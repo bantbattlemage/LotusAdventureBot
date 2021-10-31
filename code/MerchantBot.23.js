@@ -131,6 +131,11 @@ function sellVendorTrash()
 
 function exchangeSeashells()
 {
+	if (smart.moving)
+	{
+		return;
+    }
+
 	let seashells = character.items[locate_item("seashell")];
 
 	if (!seashells)
