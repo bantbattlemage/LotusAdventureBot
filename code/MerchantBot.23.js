@@ -190,6 +190,7 @@ function townInterval()
 	
 	if(!isInTown())
 	{
+		exchangeSeashells();
 		return;
 	}
 
