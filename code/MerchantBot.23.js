@@ -121,9 +121,9 @@ function exchangeSeashells()
 		return;
     }
 
-	let seashells = character.items[locate_item("seashell")];
+	let seashells = character.items[locate_item_greatest_quantity("seashell")];
 
-	if (!seashells)
+	if (!seashells || seashells.q < 20)
 	{
 		return;
 	}

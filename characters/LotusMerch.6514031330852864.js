@@ -50,8 +50,8 @@ function loadCharacter()
 			"HomeCoords": {x: -118, y: 11},
 			"HoldItems": holdItems,
 			"UpgradeList": upgradeList,
-		"CompoundList": compoundList,
-		"VendorTrash": VendorTrash,
+			"CompoundList": compoundList,
+			"VendorTrash": VendorTrash,
 			"PontyList": pontyList,
 		};
 	
