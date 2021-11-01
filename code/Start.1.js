@@ -1,4 +1,4 @@
-﻿load_code("logging");
+﻿load_code("Logging");
 load_code("BotComms");
 load_code("StandardBot");
 load_code("MerchantBot");

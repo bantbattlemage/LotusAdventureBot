@@ -1,6 +1,4 @@
-﻿//load_file("C:/GitHub/lotusAdventureBot/code/MerchantBot.23.js");
-
-function startMerchantBot()
+﻿function startMerchantBot()
 {
 	Settings["PotionStock"] = 5000;
 	Settings["LowPotions"] = 1000;
@@ -132,44 +130,49 @@ function exchangeSeashells()
 	exchangeItems("fisherman", "seashell", 20);
 }
 
-async function exchangeItems(npcName, itemName, minExchange, onComplete)
+function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
 	if (Intervals["Exhcange"] != null)
 	{
 		return;
     }
 
-	setState("Exchanging");
-
-	await Mover.smart_move(npcName);
-
-	Intervals["Exchange"] = null;
-
-	exchange(locate_item_greatest_quantity(itemName));
-
-	Intervals["Exchange"] = setTimeout(() =>
+	if (!getState("Exchanging"))
 	{
-		if (!getState("Exchanging"))
+		setState("Exchanging");
+    }
+
+	smart_move(npcName, () =>
+	{
+		Intervals["Exchange"] = null;
+
+		exchange(locate_item_greatest_quantity(itemName));
+
+		Intervals["Exchange"] = setTimeout(() =>
 		{
-			Intervals["Exchange"] = null;
-			return;
-		}
-
-		let item = character.items[locate_item_greatest_quantity(itemName)];
-
-		if (!item || (item && item.q < minExchange))
-		{
-			setState("Idle");
-
-			if (onComplete)
+			if (!getState("Exchanging"))
 			{
-				onComplete();
+				Intervals["Exchange"] = null;
+				return;
 			}
-		}
-		else {
-			exchangeItems(npcName, itemName, minExchange, onComplete);
-		}
-	}, 5000);
+
+			let item = character.items[locate_item_greatest_quantity(itemName)];
+
+			if (!item || (item && item.q < minExchange))
+			{
+				setState("Idle");
+
+				if (onComplete)
+				{
+					onComplete();
+				}
+			}
+			else
+			{
+				exchangeItems(npcName, itemName, minExchange, onComplete);
+			}
+		}, 5000);
+	});
 }
 
 function townInterval()
@@ -234,10 +237,11 @@ async function enterTownMode()
 		} 
 		else
 		{
-			await Mover.smart_moveX(Settings["HomeCoords"];
-
-			log("Starting town interval.");
-			Intervals["TownInterval"] = setInterval(townInterval, 250);
+			smart_move(Settings["HomeCoords"], () =>
+			{
+				log("Starting town interval.");
+				Intervals["TownInterval"] = setInterval(townInterval, 250);
+			});
 		}
 	}
 }

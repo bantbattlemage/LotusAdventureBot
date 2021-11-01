@@ -1,6 +1,4 @@
-﻿//load_file("C:/GitHub/lotusAdventureBot/code/Crafting.24.js");
-
-let VendorTrash =
+﻿let VendorTrash =
 [
 	"stinger", "beewings", "poison", "sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing"
 ];

@@ -1,6 +1,4 @@
-﻿//load_file("C:/GitHub/lotusAdventureBot/code/BotComms.21.js");
-
-const SentMessages = {};
+﻿const SentMessages = {};
 const RecievedMessages = {};
 const WhiteList = [];
 let commsInterval;

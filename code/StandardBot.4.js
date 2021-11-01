@@ -1,6 +1,4 @@
-﻿//load_file("C:/GitHub/lotusAdventureBot/code/StandardBot.22.js");
-
-let Settings =
+﻿let Settings =
 	{
 		"PotionStock":1000,
 		"LowPotionThreshold":100,
@@ -448,7 +446,7 @@ function autoAttack(target)
 	return false;
 }
 
-async function approach(target)
+function approach(target)
 {
 	if(is_moving(character) || smart.moving || !target)
 	{
@@ -469,11 +467,11 @@ async function approach(target)
 		
 		if(distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
 		{
-			await Move.smart_moveX(adjustment.x, adjustment.y);
+			move(adjustment.x, adjustment.y);
 		}
 		else
 		{
-			await Mover.smart_moveX(adjustment);
+			smart_move(adjustment);
 		}
 	}
 }
@@ -555,7 +553,7 @@ function beginFarming()
 	});
 }
 
-async function travelTo(map, coords=null, onComplete=()=>{})
+function travelTo(map, coords=null, onComplete=()=>{})
 {
 	let log = character.name + " traveling to " + map;
 	if(coords != null)
@@ -571,34 +569,38 @@ async function travelTo(map, coords=null, onComplete=()=>{})
 	{
 		if (coords != null)
 		{
-			await Mover.smart_moveX(coords.x, coords.y, map);
-
-			setState("Traveling", false);
-			onComplete();
+			smart_move(coords, map, () =>
+			{
+				setState("Traveling", false);
+				onComplete();
+			});
 		}
 		else
 		{
-			await Mover.smart_moveX(map);
-
-			setState("Traveling", false);
-			onComplete();
+			smart_move(map, () =>
+			{
+				setState("Traveling", false);
+				onComplete();
+			});
 		}
 	} 
 	else
 	{
 		if(coords == null)
 		{
-			await Mover.smart_moveX(map);
-
-			setState("Traveling", false);
-			onComplete();
+			smart_move(map, () =>
+			{
+				setState("Traveling", false);
+				onComplete();
+			});
 		}
 		else
 		{
-			await Move.smart_moveX(coords.x, coords.y);
-
-			setState("Traveling", false);
-			onComplete();
+			smart_move(coords, () =>
+			{
+				setState("Traveling", false);
+				onComplete();
+			});
 		}
 	}	
 }

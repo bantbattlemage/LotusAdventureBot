@@ -1,13 +1,11 @@
-﻿//load_file("C:/GitHub/lotusAdventureBot/code/Positioning.25.js");
-
-function positionRoutine()
+﻿function positionRoutine()
 {
 	if(is_moving(character) || smart.moving)
 	{
 		return;
 	}
 	
-	if(get_targeted_monster() && Settings["PriorityTargets"].includes(get_targeted_monster().mtype))
+	if (get_targeted_monster() /*Settings["PriorityTargets"].includes(get_targeted_monster().mtype)*/)
 	{
 		return;
 	}
