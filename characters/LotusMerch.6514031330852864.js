@@ -44,7 +44,8 @@ function loadCharacter()
 		];
 
 	let settings =
-		{
+	{
+			"PartyLeader": true,
 			"Party": ["LotusRanger", "RangerLotus", "LotusMage", "LotusMerch"],
 			"HomeMap": "main",
 			"HomeCoords": {x: -118, y: 11},

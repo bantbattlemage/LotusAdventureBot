@@ -12,7 +12,7 @@ function initBotComms()
 		WhiteList.push(x.name);
 	});
 	
-	commsInterval = setInterval(commsLoop, 1000);
+	//commsInterval = setInterval(commsLoop, 1000);
 	sendPartyInvites();
 }
 
@@ -68,7 +68,7 @@ function on_party_invite(inviter)
 		{
 			accept_party_invite(inviter);
 		}
-		else if(Settings["Party"].includes(inviter))
+		else if(Settings["Party"].includes(inviter) && Settings["PartyLeader"] == true)
 		{
 			send_party_invite(inviter);
 		}
