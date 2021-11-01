@@ -395,17 +395,19 @@ function startCombatInterval()
 
 		if(!target)
 		{
-			findTarget(Settings["FarmMonster"]);
+			target = findTarget(Settings["FarmMonster"]);
 		}
 		
 		if(target && !is_on_cooldown("attack"))
 		{
-			if(characterCombat(target))
+			if (characterCombat(target))
 			{
 				return;
 			}
-
-			autoAttack(target);
+			else
+			{
+				autoAttack(target);
+            }
 		}
 		
 	}, 50);

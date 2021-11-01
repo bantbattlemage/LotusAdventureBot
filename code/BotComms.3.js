@@ -11,7 +11,11 @@ function initBotComms()
 	});
 	
 	//commsInterval = setInterval(commsLoop, 1000);
-	sendPartyInvites();
+
+	if (Settings["PartyLeader"])
+	{
+		sendPartyInvites();
+    }
 }
 
 function commsLoop()
@@ -49,10 +53,13 @@ function on_cm(sender, data)
 	switch (data.message)
 	{
 		case "party":
-			if(parent.party_list.length > 1)
+			if (parent.party_list.length > 1)
 			{
 				send_party_invite(sender);
 			}
+			break;
+		default:
+			break;
 	}
 }
 
