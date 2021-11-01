@@ -43,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include=".vs\lotusAdventureBot\v16\.suo" />
-    <None Include=".vs\slnx.sqlite" />
-    <None Include=".vs\VSWorkspaceState.json" />
     <None Include="jsconfig.json" />
     <None Include="README.md" />
     <None Include="settings.zip" />
