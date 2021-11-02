@@ -309,10 +309,6 @@ function deliverTo(deliverToName, data, deliverFunction)
 
 			if (!target)
 			{
-				Flags["DeliverTarget"] = null;
-				setState("Delivering", false);
-				clearInterval(Intervals["Deliver"]);
-				Intervals["Deliver"] = null;
 				return;
 			}
 
