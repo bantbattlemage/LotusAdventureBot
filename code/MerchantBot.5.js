@@ -213,7 +213,7 @@ function townInterval()
 function checkMluck(target)
 {
 	let mLuckDuration = 3600000;
-	return /*(target.s.mluck && target.s.mluck.f === ) ||*/ (target.s.mluck && target.s.mluck.ms > mLuckDuration * 0.25);
+	return /*(target.s.mluck && target.s.mluck.f === ) ||*/ !target.s.mluck || (target.s.mluck && target.s.mluck.ms > mLuckDuration * 0.25);
 }
 
 async function enterTownMode()
