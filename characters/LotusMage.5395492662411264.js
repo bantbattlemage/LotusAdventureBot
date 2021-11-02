@@ -49,7 +49,7 @@ function castEnergize()
 		}
 	}
 
-	if (energizeTarget == null)
+	if (energizeTarget === null)
 	{
 		return false;
     }

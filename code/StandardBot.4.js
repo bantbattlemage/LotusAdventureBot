@@ -20,42 +20,66 @@ function startBotCore(settings)
 	
 	loadSettings(settings);
 	initBotComms();
-	
-	Intervals["Loot"] = setInterval(()=>
-	{
-		if(character.rip) { return; }
-		loot();
-	}, 100);
 
-	Intervals["UsePotions"] = setInterval(() =>
+	//	combat bot only Intervals
+	if (character.ctype != "merchant")
 	{
-		if (character.rip) { return; }
-		usePotions();
-	}, 100);
-	
-	Intervals["CheckPotions"] = setInterval(()=>
-	{
-		if (character.rip) { return; }
-		checkPotions();
-		checkElixirBuff();
-	}, 5000);
-	
-	Intervals["InventoryManagement"] = setInterval(()=>
-	{
-		let merchant = getOnlineMerchant();
-		if(get_player(merchant.name))
+		Intervals["Loot"] = setInterval(() =>
 		{
-			sendItemsAndGoldToMerchant();
-		}
-		if(character.esize < Settings["LowInventory"] && getState("Farming"))
+			if (character.rip)
+			{
+				return;
+			}
+
+			loot();
+
+		}, 500);
+
+		Intervals["UsePotions"] = setInterval(() =>
 		{
-			goToTown();
-		}
-	}, 5000);
-	
+			if (character.rip)
+			{
+				return;
+			}
+
+			usePotions();
+
+		}, 500);
+
+		Intervals["CheckPotions"] = setInterval(() =>
+		{
+			if (character.rip)
+			{
+				return;
+			}
+
+			checkPotions();
+			checkElixirBuff();
+
+		}, 5000);
+
+		Intervals["InventoryManagement"] = setInterval(() =>
+		{
+			let merchant = getOnlineMerchant();
+
+			if (get_player(merchant.name))
+			{
+				sendItemsAndGoldToMerchant();
+			}
+
+			if (character.esize < Settings["LowInventory"] && getState("Farming"))
+			{
+				goToTown();
+			}
+
+		}, 5000);
+    }
+
+	//	Intervals for all bots
+
 	Intervals["IdleCheck"] = setInterval(() =>
 	{
-		if(Flags["IdleChecking"] || !getState("Idle"))
+		if (Flags["IdleChecking"] || !getState("Idle") || smart.moving)
 		{
 			return;
 		}
@@ -71,9 +95,9 @@ function startBotCore(settings)
 
 			Flags["IdleChecking"] = false;
 
-		}, 5000);
+		}, 7500);
 		
-	}, 3000);
+	}, 5000);
 	
 	log(character.name + " StandardBot loaded!");
 	
@@ -327,19 +351,26 @@ function goToTown(onComplete=()=>{})
 	setState("Traveling");
 	stop();
 	stopCombatInterval();
-	use_skill("use_town");
-	setTimeout(()=>
-	{
-		travelTo("main", null, () =>
-		{
-			sellVendorTrash();
 
-			if (onComplete)
+	setTimeout(() =>
+	{
+		use_skill("use_town");
+
+		setTimeout(() =>
+		{
+			travelTo("main", null, () =>
 			{
-				onComplete();
-            }
-		});
-	}, 8000);
+				sellVendorTrash();
+
+				if (onComplete)
+				{
+					onComplete();
+				}
+			});
+		}, 8000);
+	}, 5000);
+
+
 }
 
 function sellVendorTrash()
@@ -588,7 +619,7 @@ function travelTo(map, coords=null, onComplete=()=>{})
 	} 
 	else
 	{
-		if(coords == null)
+		if(coords === null)
 		{
 			smart_move(map, () =>
 			{
@@ -644,7 +675,7 @@ function setState(state, isTrue=true)
 
 function getState(state=null)
 {
-	if(state == null)
+	if(state === null)
 	{
 		for (let s in State)
 		{
@@ -668,7 +699,7 @@ function locate_item_greatest_quantity(name)
 
 	for (var i = 0; i < character.items.length; i++)
 	{
-		if (character.items[i] && character.items[i].name == name && ((location != -1 && character.items[location].q < character.items[i].q) || location == -1))
+		if (character.items[i] && character.items[i].name === name && ((location != -1 && character.items[location].q < character.items[i].q) || location == -1))
 		{
 			location = i;
         }

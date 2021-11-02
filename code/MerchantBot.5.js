@@ -48,7 +48,7 @@ function onMerchantCM(data)
 	{
 		case "NeedElixir":
 
-			if (getState("Delivering") || getElixirInventorySlot(data.elixir) == null)
+			if (getState("Delivering") || getElixirInventorySlot(data.elixir) === null)
 			{
 				break;
 			}
