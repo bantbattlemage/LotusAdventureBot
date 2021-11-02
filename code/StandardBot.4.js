@@ -192,7 +192,7 @@ function checkElixirBuff()
 	}
 	
 	//	need elixir buff
-	if (!character.slots.elixir)
+	if (!character.slots.elixir || Date.now >= character.slots.elixir.expires)
 	{
 		//	find an elixir in your inventory
 		let elixir = getElixirInventorySlot(buffToExpect);
@@ -202,6 +202,7 @@ function checkElixirBuff()
 		{
 			log("Drinking " + G.items[character.items[elixir].name].name);
 			use(elixir);
+
 			return true;
 		}
 		//	if not, ask the merchant for one
@@ -217,6 +218,7 @@ function checkElixirBuff()
 				};
 				requestMerchant(message);
 			}
+
 			return false;
 		}
 	}

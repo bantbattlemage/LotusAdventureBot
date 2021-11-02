@@ -22,14 +22,14 @@
 		for (let e in parent.entities)
 		{
 			let entity = parent.entities[e];
-			if (entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck"))
+			if (character.mana >= 10 && entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck"))
 			{
 				log("Mlucking " + entity.name);
 				use_skill("mluck", entity);
 			}
 		}
 		
-	}, 250);
+	}, 1000);
 
 	log(character.name + " MerchantBot loaded!");
 }
@@ -280,7 +280,7 @@ function deliverElixir(deliverToName, data)
 	deliverTo(deliverToName, data, ()=>
 	{
 		writeToLog("Delivering " + data.elixir + " to " + deliverToName);
-		send_item(deliverToName, getElixirInventorySlot(data.elixir), 3);
+		send_item(deliverToName, getElixirInventorySlot(data.elixir), 1);
 	});
 }
 
