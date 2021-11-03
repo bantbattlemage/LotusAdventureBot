@@ -307,7 +307,7 @@ function deliverTo(deliverToName, data, deliverFunction)
 		{
 			let target = get_player(deliverToName);
 
-			if (!target)
+			if (!target || smart.moving)
 			{
 				return;
 			}
