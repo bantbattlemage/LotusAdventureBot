@@ -190,9 +190,11 @@ function checkElixirBuff()
 	{
 		buffToExpect = "elixirstr";
 	}
-	
+
+	now = new Date();
+
 	//	need elixir buff
-	if (!character.slots.elixir || Date.now >= character.slots.elixir.expires)
+	if (!character.slots.elixir || now >= character.slots.elixir.expires)
 	{
 		//	find an elixir in your inventory
 		let elixir = getElixirInventorySlot(buffToExpect);
