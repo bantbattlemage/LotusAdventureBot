@@ -431,8 +431,11 @@ function startCombatInterval()
 		{
 			target = findTarget(Settings["FarmMonster"]);
 		}
-		
-		if(target && !is_on_cooldown("attack"))
+		else if (!is_in_range(target, "attack"))
+		{
+			approach(target);
+		}		
+		else if(target && !is_on_cooldown("attack"))
 		{
 			if (characterCombat(target))
 			{
@@ -444,7 +447,7 @@ function startCombatInterval()
             }
 		}
 		
-	}, 50);
+	}, 100);
 }
 
 function stopCombatInterval()
