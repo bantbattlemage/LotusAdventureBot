@@ -311,8 +311,10 @@ function deliverTo(deliverToName, data, deliverFunction)
 			{
 				return;
 			}
-
-			approach(target);
+			else
+			{
+				approach(target);
+            }
 			
 			if (target && distance(character, target) < 100)
 			{
