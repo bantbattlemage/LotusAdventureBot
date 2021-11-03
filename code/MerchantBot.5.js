@@ -315,8 +315,8 @@ function deliverTo(deliverToName, data, deliverFunction)
 			{
 				approach(target);
             }
-			
-			if (target && distance(character, target) < 100)
+
+			if (target && distance(character, target) < 100 && !smart.moving)
 			{
 				deliverFunction();
 				
