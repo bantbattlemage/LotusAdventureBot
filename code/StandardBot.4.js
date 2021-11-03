@@ -250,7 +250,6 @@ function getElixirInventorySlot(elixirBaseName, elixirLevel = -1)
 
 		if (elixir > -1)
 		{
-			log(elixirBaseName + i);
 			return elixir;
 		}
 	}
