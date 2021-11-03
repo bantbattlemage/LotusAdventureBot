@@ -503,10 +503,12 @@ function approach(target)
 		
 		if(distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
 		{
+			stop();
 			move(adjustment.x, adjustment.y);
 		}
 		else
 		{
+			stop();
 			smart_move(adjustment);
 		}
 	}

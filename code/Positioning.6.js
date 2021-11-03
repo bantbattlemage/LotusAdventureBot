@@ -17,6 +17,7 @@
 	
 	targetPos.x += Math.cos(theta) * radius;
 	targetPos.y += Math.sin(theta) * radius;
-	
+
+	stop();
 	move(targetPos.x, targetPos.y);
 }
