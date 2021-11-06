@@ -210,10 +210,11 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 		setState("Exchanging");
 	}
 
+	Flags["ExchangeItem"] = itemName;
 
-	smart_move(npcName, (x = itemName) =>
+	smart_move(npcName, () =>
 	{
-		Intervals["Exchange"] = setInterval((n = x) =>
+		Intervals["Exchange"] = setInterval(() =>
 		{
 			if (!getState("Exchanging"))
 			{
@@ -221,16 +222,18 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				return;
 			}
 
-			if (character.q != null && character.q.exchange != null)
+			if (character.q.exchange)
 			{
 				return;
             }
 
-			let item = character.items[locate_item_greatest_quantity(n)];
+			let name = Flags["ExchangeItem"];
+			let item = character.items[locate_item_greatest_quantity(name)];
 
 			if (!item || (item && item.q < minExchange))
 			{
 				setState("Idle");
+				Flags["ExchangeItem"] = null;
 
 				if (onComplete)
 				{
@@ -241,7 +244,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			{
 				exchange(item);
 
-				exchangeItems(npcName, n, minExchange, onComplete);
+				exchangeItems(npcName, name, minExchange, onComplete);
 			}
 
 		}, 1000);
