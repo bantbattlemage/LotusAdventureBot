@@ -51,13 +51,13 @@ function loadCharacter()
 			"Party": ["LotusRanger", "RangerLotus", "LotusMage", "LotusMerch"],
 			"HomeMap": "main",
 			"HomeCoords": {x: -118, y: 11},
-			"LowInventory:": 3,
 			"HoldItems": holdItems,
 			"UpgradeList": upgradeList,
 			"CompoundList": compoundList,
 			"VendorTrash": VendorTrash,
 			"PontyList": pontyList,
-		};
+			"LowInventory": 3
+	};
 	
 	startBotCore(settings);
 	startMerchantBot();

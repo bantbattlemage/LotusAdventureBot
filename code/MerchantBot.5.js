@@ -2,6 +2,7 @@
 {
 	Settings["PotionStock"] = 5000;
 	Settings["LowPotions"] = 1000;
+	/*Settings["LowInventory"] = 3;*/
 	
 	game.on("stateChanged", onMerchantStateChanged);
 	game.on("codeMessage", onMerchantCM);
@@ -224,7 +225,9 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 		{
 			if (!getState("Exchanging"))
 			{
+				clearInterval(Intervals["Exchange"]);
 				Intervals["Exchange"] = null;
+				Flags["ExchangeItem"] = null;
 				return;
 			}
 
@@ -239,6 +242,8 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			if (!item || (item && item.q < minExchange) || character.esize < Settings["LowInventory"])
 			{
 				setState("Idle");
+				clearInterval(Intervals["Exchange"]);
+				Intervals["Exchange"] = null;
 				Flags["ExchangeItem"] = null;
 
 				if (onComplete)
