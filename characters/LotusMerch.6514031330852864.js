@@ -24,7 +24,8 @@ function loadCharacter()
 			"quiver": 7,
 			"firestaff": 5,
 			"mushroomstaff":7,
-			"hbow":7
+			"hbow":7,
+			"phelmet": 7
 		};
 	let compoundList =
 		{
