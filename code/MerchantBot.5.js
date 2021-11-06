@@ -220,7 +220,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				return;
 			}
 
-			if (character.q.exchange)
+			if (character.q != null && character.q != {})
 			{
 				return;
             }
