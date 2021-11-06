@@ -1,12 +1,12 @@
 ﻿let Settings =
-	{
-		"PotionStock":1000,
-		"LowPotionThreshold":100,
-		"Wallet":250000,
-		"HoldItems":["tracker","hpot1","mpot1"],
-		"Party":[],
-		"LowInventory":14,
-	};
+{
+	"PotionStock": 1000,
+	"LowPotionThreshold": 100,
+	"Wallet": 250000,
+	"HoldItems": ["tracker", "hpot1", "mpot1"],
+	"Party": [],
+	"LowInventory": 14,
+};
 let State = {};
 let Intervals = {};
 let Flags = {};
@@ -14,9 +14,10 @@ let Flags = {};
 function startBotCore(settings)
 {
 	game.on("stateChanged", onStateChanged);
+	game.on("idle", onIdle);
 	game.on("death", onDeath);
 	game.on("level_up", onLevelUp);
-	
+
 	loadSettings(settings);
 	initBotComms();
 
@@ -43,7 +44,7 @@ function startBotCore(settings)
 
 			usePotions();
 
-		}, 1000);
+		}, 500);
 
 		Intervals["CheckPotions"] = setInterval(() =>
 		{
@@ -72,32 +73,34 @@ function startBotCore(settings)
 			}
 
 		}, 5000);
-    }
+	}
 
 	//	Intervals for all bots
 
 	Intervals["IdleCheck"] = setInterval(() =>
 	{
-		if (Flags["IdleChecking"] || !getState("Idle") || smart.moving || is_moving(character))
+		if (Flags["IdleChecking"] || !getState("Idle") || smart.moving)
 		{
 			return;
 		}
-		
+
 		Flags["IdleChecking"] = true;
-		
+
 		setTimeout(() =>
 		{
-			if (!getState("Idle"))
+			if (getState("Idle"))
 			{
-				Flags["IdleChecking"] = false;
+				game.trigger("idle");
 			}
 
-		}, 10000);
-		
+			Flags["IdleChecking"] = false;
+
+		}, 7500);
+
 	}, 5000);
-	
+
 	log(character.name + " StandardBot loaded!");
-	
+
 	setState("Idle");
 }
 
@@ -114,17 +117,21 @@ function onStateChanged(newState)
 			startCombatInterval();
 			break;
 		case "Idle":
-			if (Flags["Farming"])
-			{
-				beginFarming();
-			}
-			else if (!isInTown())
-			{
-				goToTown();
-			}
 			break;
 		case "Dead":
 			break;
+	}
+}
+
+function onIdle()
+{
+	if (Flags["Farming"])
+	{
+		beginFarming();
+	}
+	else if (!isInTown())
+	{
+		goToTown();
 	}
 }
 
@@ -135,13 +142,13 @@ function onDeath(data)
 		writeToLog(data.id + " died!");
 
 		stopCombatInterval();
-		
+
 		Intervals["Respawn"] = setInterval(() =>
 		{
 			if (character.rip)
 			{
 				respawn();
-			} 
+			}
 			else
 			{
 				setState("Idle");
@@ -149,7 +156,7 @@ function onDeath(data)
 				Intervals["Respawn"] = null;
 			}
 		}, 1000);
-		
+
 		setState("Dead");
 	}
 }
@@ -164,11 +171,11 @@ function onLevelUp(data)
 
 function checkElixirBuff()
 {
-	if(character.ctype === "merchant")
+	if (character.ctype === "merchant")
 	{
 		return;
 	}
-	
+
 	let buffToExpect = null;
 
 	if (character.ctype === "priest" || character.ctype === "mage")
@@ -204,7 +211,7 @@ function checkElixirBuff()
 		else
 		{
 			let merchant = getOnlineMerchant();
-			
+
 			if (merchant && character.name !== merchant.name)
 			{
 				let message = {
@@ -232,7 +239,7 @@ function getElixirInventorySlot(elixirBaseName, elixirLevel = -1)
 		if (elixir > -1)
 		{
 			return elixir;
-		} 
+		}
 		else
 		{
 			return null;
@@ -255,23 +262,23 @@ function getElixirInventorySlot(elixirBaseName, elixirLevel = -1)
 function sendItemsAndGoldToMerchant()
 {
 	let merchant = get_player(getOnlineMerchant().name);
-	
-	if(character.name === merchant.name)
+
+	if (character.name === merchant.name)
 	{
 		return;
 	}
-	
-	if(merchant && distance(character, merchant) < 200 && character.gold > Settings["Wallet"])
+
+	if (merchant && distance(character, merchant) < 200 && character.gold > Settings["Wallet"])
 	{
 		let gold = character.gold - Settings["Wallet"];
 		writeToLog(character.name + " sending " + gold + " gold to " + merchant.name);
 		send_gold(merchant.name, gold);
-		
-		for(let i = 0; i < character.items.length; i++)
+
+		for (let i = 0; i < character.items.length; i++)
 		{
 			let item = character.items[i];
-			
-			if(item && !Settings["HoldItems"].includes(item.name))
+
+			if (item && !Settings["HoldItems"].includes(item.name))
 			{
 				writeToLog(character.name + " sending " + G.items[item.name].name + " to " + merchant.name);
 				send_item(merchant.name, i, item.q);
@@ -282,20 +289,20 @@ function sendItemsAndGoldToMerchant()
 
 function checkPotions()
 {
-	if(getState("NeedPotions") || getState("Traveling"))
+	if (getState("NeedPotions") || getState("Traveling"))
 	{
 		return;
 	}
-	
+
 	let hPots = Settings["PotionStock"] - quantity("hpot1");
 	let mPots = Settings["PotionStock"] - quantity("mpot1");
 	let thresh = Settings["PotionStock"] - Settings["LowPotionThreshold"];
-	
-	if(hPots > thresh || mPots > thresh)
+
+	if (hPots > thresh || mPots > thresh)
 	{
 		let merchant = getOnlineMerchant();
 
-		if(quantity("hpot1") === 0 || quantity("mpot1") === 0)
+		if (quantity("hpot1") === 0 || quantity("mpot1") === 0)
 		{
 			writeToLog(character.name + " needs to buy potions!");
 			setState("NeedPotions");
@@ -315,34 +322,34 @@ function checkPotions()
 function buyPotions(hpots, mpots)
 {
 	log("Buying Potions");
-	
-	if(!isInTown())
+
+	if (!isInTown())
 	{
 		goToTown();
 	}
-	else if(getState("NeedPotions"))
+	else if (getState("NeedPotions"))
 	{
-		let h =  hpots - quantity("hpot1");
-		
-		if(h > 0)
+		let h = hpots - quantity("hpot1");
+
+		if (h > 0)
 		{
 			writeToLog("Buying " + h + " health potions.");
-			buy_with_gold("hpot1", h);			
+			buy_with_gold("hpot1", h);
 		}
-		
+
 		let m = mpots - quantity("mpot1");
-		
-		if(m > 0)
+
+		if (m > 0)
 		{
 			writeToLog("Buying " + m + " mana potions.");
-			buy_with_gold("mpot1", m);			
+			buy_with_gold("mpot1", m);
 		}
 
 		setState("Idle");
 	}
 }
 
-function goToTown(onComplete=()=>{})
+function goToTown(onComplete = () => { })
 {
 	setState("Traveling");
 	stop();
@@ -385,7 +392,7 @@ function sellVendorTrash()
 
 function isInTown()
 {
-	return (character.map === "main" && distance(character, {x:0, y:0}) < 150);
+	return (character.map === "main" && distance(character, { x: 0, y: 0 }) < 150);
 }
 
 function usePotions()
@@ -398,7 +405,7 @@ function usePotions()
 	let hPotRecovery = 400;//G.items[Potions[0]].gives.hp;
 	let mPotRecovery = 500;//G.items[Potions[1]].gives.mp;
 
-	if ((character.hp <= (character.max_hp - hPotRecovery) || character.mp <= (character.max_mp - mPotRecovery)) || getState("Idle") )
+	if ((character.hp <= (character.max_hp - hPotRecovery) || character.mp <= (character.max_mp - mPotRecovery)) || getState("Idle"))
 	{
 		use_hp_or_mp();
 	}
@@ -406,12 +413,12 @@ function usePotions()
 
 function startCombatInterval()
 {
-	if(Intervals["Combat"])
+	if (Intervals["Combat"])
 	{
 		log("Combat interval already started!");
 		return;
 	}
-	
+
 	log("Combat interval starting.");
 
 	Intervals["Combat"] = setInterval(() =>
@@ -420,15 +427,15 @@ function startCombatInterval()
 
 		positionRoutine();
 
-		if(!target)
+		if (!target)
 		{
 			target = findTarget(Settings["FarmMonster"]);
 		}
 		else if (!is_in_range(target, "attack"))
 		{
 			approach(target);
-		}		
-		else if(target && !is_on_cooldown("attack"))
+		}
+		else if (target && !is_on_cooldown("attack"))
 		{
 			if (characterCombat(target))
 			{
@@ -437,9 +444,9 @@ function startCombatInterval()
 			else
 			{
 				autoAttack(target);
-            }
+			}
 		}
-		
+
 	}, 100);
 }
 
@@ -451,11 +458,11 @@ function stopCombatInterval()
 
 function autoAttack(target)
 {
-	if(!target || character.mp < character.mp_cost)
+	if (!target || character.mp < character.mp_cost)
 	{
 		return false;
 	}
-	
+
 	if (!is_in_range(target, "attack"))
 	{
 		approach(target);
@@ -463,7 +470,7 @@ function autoAttack(target)
 	else if (!is_on_cooldown("attack"))
 	{
 		reduce_cooldown("attack", character.ping);
-		
+
 		attack(target).then((message) =>
 		{
 
@@ -471,33 +478,33 @@ function autoAttack(target)
 		{
 			//log(character.name + " attack failed: " + message.reason);
 		});
-		
+
 		return true;
 	}
-	
+
 	return false;
 }
 
 function approach(target)
 {
-	if(is_moving(character) || smart.moving || !target)
+	if (is_moving(character) || smart.moving || !target)
 	{
-		if(!target)
+		if (!target)
 		{
 			writeToLog(character.name + " attempted to appraoch a non-present target");
 		}
-		
+
 		return;
 	}
-	
-	let adjustment = {x:0, y:0};
-	
-	if(target.x && target.y)
+
+	let adjustment = { x: 0, y: 0 };
+
+	if (target.x && target.y)
 	{
 		adjustment.x = character.x + (target.x - character.x) * 0.3;
 		adjustment.y = character.y + (target.y - character.y) * 0.3;
-		
-		if(distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
+
+		if (distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
 		{
 			stop();
 			move(adjustment.x, adjustment.y);
@@ -512,56 +519,56 @@ function approach(target)
 
 function findPriorityTarget()
 {
-	let currentTarget = get_nearest_monster({target: character});
-	if(currentTarget)
+	let currentTarget = get_nearest_monster({ target: character });
+	if (currentTarget)
 	{
 		return currentTarget;
 	}
-	
-	for(let index in Settings["PriorityTargets"])
+
+	for (let index in Settings["PriorityTargets"])
 	{
 		let name = Settings["PriorityTargets"][index];
 		let target = findTarget(name);
-		
-		if(target)
+
+		if (target)
 		{
 			return target;
 		}
 	}
-	
+
 	return false;
 }
 
 function findTarget(mtype)
 {
 	let target = get_targeted_monster();
-	
-	if(!target || target.rip)
+
+	if (!target || target.rip)
 	{
-		target = get_nearest_monster({type: mtype, target: character.name});
+		target = get_nearest_monster({ type: mtype, target: character.name });
 	}
-	
-	if(!target || target.rip)
+
+	if (!target || target.rip)
 	{
 		for (let p of parent.party_list)
 		{
 			if (p !== character.name)
 			{
-				target = get_nearest_monster({target: p});
+				target = get_nearest_monster({ target: p });
 				break;
 			}
 		}
 	}
-	
-	if(!target || target.rip)
+
+	if (!target || target.rip)
 	{
-		target = get_nearest_monster({type: mtype, no_target: true});
+		target = get_nearest_monster({ type: mtype, no_target: true });
 	}
-	
-	if(target)
+
+	if (target)
 	{
 		change_target(target);
-		return target;		
+		return target;
 	}
 	else
 	{
@@ -574,31 +581,31 @@ function beginFarming()
 	Flags["Farming"] = true;
 
 	checkPotions();
-	
-	if(getState("NeedPotions"))
+
+	if (getState("NeedPotions"))
 	{
 		return;
 	}
-	
+
 	log("Traveling to farming location.");
-	travelTo(Settings["FarmMap"], getFarmLocation(), ()=>
+	travelTo(Settings["FarmMap"], getFarmLocation(), () =>
 	{
-		setState("Farming"); 
+		setState("Farming");
 	});
 }
 
-function travelTo(map, coords=null, onComplete=()=>{})
+function travelTo(map, coords = null, onComplete = () => { })
 {
 	let log = character.name + " traveling to " + map;
-	if(coords != null)
+	if (coords != null)
 	{
-		log += " (" + coords.x +", " + coords.y + ")";
+		log += " (" + coords.x + ", " + coords.y + ")";
 	}
 	writeToLog(log);
-	
+
 	stop();
 	setState("Traveling");
-	
+
 	if (character.map !== map)
 	{
 		if (coords != null)
@@ -617,10 +624,10 @@ function travelTo(map, coords=null, onComplete=()=>{})
 				onComplete();
 			});
 		}
-	} 
+	}
 	else
 	{
-		if(coords === null)
+		if (coords === null)
 		{
 			smart_move(map, () =>
 			{
@@ -636,12 +643,12 @@ function travelTo(map, coords=null, onComplete=()=>{})
 				onComplete();
 			});
 		}
-	}	
+	}
 }
 
 function getFarmLocation()
 {
-	let coords = {x: 0, y: 0};
+	let coords = { x: 0, y: 0 };
 
 	let monster = G.maps[Settings["FarmMap"]].monsters.find((x) =>
 	{
@@ -650,37 +657,37 @@ function getFarmLocation()
 
 	coords.x = monster.boundary[0] + ((monster.boundary[2] - monster.boundary[0]) / 2);
 	coords.y = monster.boundary[1] + ((monster.boundary[3] - monster.boundary[1]) / 2);
-	
+
 	return coords;
 }
 
-function setState(state, isTrue=true)
+function setState(state, isTrue = true)
 {
-	if(isTrue)
+	if (isTrue)
 	{
 		for (let s in State)
 		{
 			State[s] = false;
 		}
 	}
-	
+
 	State[state] = isTrue;
-	
-	if(!isTrue)
+
+	if (!isTrue)
 	{
 		State["Idle"] = true;
 	}
-	
+
 	game.trigger("stateChanged", state);
 }
 
-function getState(state=null)
+function getState(state = null)
 {
-	if(state === null)
+	if (state === null)
 	{
 		for (let s in State)
 		{
-			if(State[s] === true)
+			if (State[s] === true)
 			{
 				return s;
 			}
@@ -690,7 +697,7 @@ function getState(state=null)
 	{
 		return State[state];
 	}
-	
+
 	return false;
 }
 
@@ -703,7 +710,7 @@ function locate_item_greatest_quantity(name)
 		if (character.items[i] && character.items[i].name === name && ((location != -1 && character.items[location].q < character.items[i].q) || location == -1))
 		{
 			location = i;
-        }
+		}
 	}
 
 	return location;
@@ -722,5 +729,5 @@ function loadSettings(settings)
 			case "":
 				break;
 		}
-	}	
+	}
 }
