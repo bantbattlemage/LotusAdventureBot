@@ -167,7 +167,7 @@ function exchangeCandies()
 
 	let candies = character.items[locate_item_greatest_quantity("candy1")];
 
-	if (!candies || candies.q < 20)
+	if (!candies)
 	{
 		return false;
 	}
@@ -196,7 +196,7 @@ function exchangeSeashells()
 
 function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
-	if (Intervals["Exhcange"] != null)
+	if (Intervals["Exchange"] != null)
 	{
 		return false;
     }
@@ -208,10 +208,6 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 
 	smart_move(npcName, () =>
 	{
-		Intervals["Exchange"] = null;
-
-		exchange(locate_item_greatest_quantity(itemName));
-
 		Intervals["Exchange"] = setTimeout(() =>
 		{
 			if (!getState("Exchanging"))
@@ -238,8 +234,11 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			}
 			else
 			{
+				exchange(item);
+
 				exchangeItems(npcName, itemName, minExchange, onComplete);
 			}
+
 		}, 1000);
 	});
 }
