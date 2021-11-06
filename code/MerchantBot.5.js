@@ -174,6 +174,8 @@ function exchangeCandies()
 
 	writeToLog("Exchanging candies...");
 	exchangeItems("exchange", "candy1", 1);
+
+	return true;
 }
 
 function exchangeSeashells()
@@ -192,6 +194,8 @@ function exchangeSeashells()
 
 	writeToLog("Exchanging seashells...");
 	exchangeItems("fisherman", "seashell", 20);
+
+	return true;
 }
 
 function exchangeItems(npcName, itemName, minExchange, onComplete)
