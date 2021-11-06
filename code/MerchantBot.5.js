@@ -242,6 +242,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			}
 			else
 			{
+				log("Exchanging " + name);
 				exchange(item);
 
 				exchangeItems(npcName, name, minExchange, onComplete);
