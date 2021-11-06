@@ -26,6 +26,7 @@
 			{
 				log("Mlucking " + entity.name);
 				use_skill("mluck", entity);
+				usePotions();
 			}
 		}
 		
@@ -230,7 +231,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			let name = Flags["ExchangeItem"];
 			let item = character.items[locate_item_greatest_quantity(name)];
 
-			if (!item || (item && item.q < minExchange))
+			if (!item || (item && item.q < minExchange) || character.esize < Settings["LowInventory"])
 			{
 				setState("Idle");
 				Flags["ExchangeItem"] = null;
