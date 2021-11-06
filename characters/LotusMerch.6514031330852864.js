@@ -31,7 +31,8 @@ function loadCharacter()
 			"intearring": defaultCompoundLevel,
 			"dexearring": defaultCompoundLevel,
 			"strearring": defaultCompoundLevel,
-			"wbook0": 3
+			"wbook0": 3,
+			"skullamulet": 2
 		};
 	let pontyList = 
 		[
