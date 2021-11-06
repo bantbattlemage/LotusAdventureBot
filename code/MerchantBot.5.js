@@ -131,7 +131,7 @@ function townInterval()
 
 	sellVendorTrash();
 
-	if (!character.q.upgrade && !character.q.compound && !smart.moving && !character.q.exchange)
+	if (!smart.moving && !character.q.upgrade && !character.q.compound && !character.q.exchange)
 	{
 		let busy = false;
 		busy = craftUpgrades();
@@ -216,7 +216,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				return;
 			}
 
-			if (character.q.exchange)
+			if (character.q && character.q.exchange)
 			{
 				return;
             }
