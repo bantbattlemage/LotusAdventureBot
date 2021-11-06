@@ -242,8 +242,8 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			}
 			else
 			{
-				log("Exchanging " + name);
-				exchange(item);
+				log("Exchanging " + ite);
+				exchange(locate_item_greatest_quantity(name));
 			}
 
 		}, 1000);
