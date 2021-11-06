@@ -208,11 +208,12 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 	if (!getState("Exchanging"))
 	{
 		setState("Exchanging");
-    }
+	}
 
-	smart_move(npcName, () =>
+
+	smart_move(npcName, (x = itemName) =>
 	{
-		Intervals["Exchange"] = setTimeout(() =>
+		Intervals["Exchange"] = setInterval((n = x) =>
 		{
 			if (!getState("Exchanging"))
 			{
@@ -225,7 +226,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				return;
             }
 
-			let item = character.items[locate_item_greatest_quantity(itemName)];
+			let item = character.items[locate_item_greatest_quantity(n)];
 
 			if (!item || (item && item.q < minExchange))
 			{
@@ -240,7 +241,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			{
 				exchange(item);
 
-				exchangeItems(npcName, itemName, minExchange, onComplete);
+				exchangeItems(npcName, n, minExchange, onComplete);
 			}
 
 		}, 1000);
