@@ -116,14 +116,14 @@ function exchangeCandies()
 {
 	if (smart.moving)
 	{
-		return;
+		return false;
 	}
 
 	let candies = character.items[locate_item_greatest_quantity("candy1")];
 
 	if (!candies || candies.q < 20)
 	{
-		return;
+		return false;
 	}
 
 	writeToLog("Exchanging candies...");
@@ -134,14 +134,14 @@ function exchangeSeashells()
 {
 	if (smart.moving)
 	{
-		return;
+		return false;
     }
 
 	let seashells = character.items[locate_item_greatest_quantity("seashell")];
 
 	if (!seashells || seashells.q < 20)
 	{
-		return;
+		return false;
 	}
 
 	writeToLog("Exchanging seashells...");
@@ -152,7 +152,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 {
 	if (Intervals["Exhcange"] != null)
 	{
-		return;
+		return false;
     }
 
 	if (!getState("Exchanging"))
@@ -211,7 +211,7 @@ function townInterval()
 
 	sellVendorTrash();
 
-	if (!character.q.upgrade && !character.q.compound)
+	if (!character.q.upgrade && !character.q.compound && !smart.moving)
 	{
 		let busy = false;
 		busy = craftUpgrades();
