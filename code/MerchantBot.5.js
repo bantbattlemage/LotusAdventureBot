@@ -126,8 +126,8 @@ function exchangeCandies()
 		return;
 	}
 
-	writeToLog("Exchanging seashells...");
-	exchangeItems("xyn", "candy1", 1);
+	writeToLog("Exchanging candies...");
+	exchangeItems("exchange", "candy1", 1);
 }
 
 function exchangeSeashells()
