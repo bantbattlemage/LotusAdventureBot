@@ -112,6 +112,24 @@ function onMerchantIdle()
 	}
 }
 
+function exchangeCandies()
+{
+	if (smart.moving)
+	{
+		return;
+	}
+
+	let candies = character.items[locate_item_greatest_quantity("candy1")];
+
+	if (!candies || candies.q < 20)
+	{
+		return;
+	}
+
+	writeToLog("Exchanging seashells...");
+	exchangeItems("xyn", "candy1", 1);
+}
+
 function exchangeSeashells()
 {
 	if (smart.moving)
@@ -206,7 +224,12 @@ function townInterval()
 		if (!busy)
 		{
 			busy = exchangeSeashells();
-        }
+		}
+
+		if (!busy)
+		{
+			busy = exchangeCandies();
+		}
 	}
 }
 

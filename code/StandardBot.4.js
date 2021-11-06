@@ -14,7 +14,6 @@ let Flags = {};
 function startBotCore(settings)
 {
 	game.on("stateChanged", onStateChanged);
-	game.on("idle", onIdle);
 	game.on("death", onDeath);
 	game.on("level_up", onLevelUp);
 	
@@ -44,7 +43,7 @@ function startBotCore(settings)
 
 			usePotions();
 
-		}, 500);
+		}, 1000);
 
 		Intervals["CheckPotions"] = setInterval(() =>
 		{
@@ -79,7 +78,7 @@ function startBotCore(settings)
 
 	Intervals["IdleCheck"] = setInterval(() =>
 	{
-		if (Flags["IdleChecking"] || !getState("Idle") || smart.moving)
+		if (Flags["IdleChecking"] || !getState("Idle") || smart.moving || is_moving(character))
 		{
 			return;
 		}
@@ -88,14 +87,12 @@ function startBotCore(settings)
 		
 		setTimeout(() =>
 		{
-			if (getState("Idle"))
+			if (!getState("Idle"))
 			{
-				game.trigger("idle");
+				Flags["IdleChecking"] = false;
 			}
 
-			Flags["IdleChecking"] = false;
-
-		}, 7500);
+		}, 10000);
 		
 	}, 5000);
 	
@@ -117,21 +114,17 @@ function onStateChanged(newState)
 			startCombatInterval();
 			break;
 		case "Idle":
+			if (Flags["Farming"])
+			{
+				beginFarming();
+			}
+			else if (!isInTown())
+			{
+				goToTown();
+			}
 			break;
 		case "Dead":
 			break;
-	}
-}
-
-function onIdle()
-{
-	if (Flags["Farming"])
-	{
-		beginFarming();
-	}
-	else if(!isInTown())
-	{
-		goToTown();		
 	}
 }
 
