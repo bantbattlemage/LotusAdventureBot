@@ -112,6 +112,52 @@ function onMerchantIdle()
 	}
 }
 
+//	merchant main interval
+function townInterval()
+{
+	if (is_moving(character) || smart.moving)
+	{
+		parent.close_merchant();
+	}
+	else if (!parent.stand && !is_moving(character) && !smart.moving)
+	{
+		parent.open_merchant(locate_item("stand0"));
+	}
+
+	if (!isInTown())
+	{
+		return;
+	}
+
+	sellVendorTrash();
+
+	if (!character.q.upgrade && !character.q.compound && !smart.moving && !character.q.exchange)
+	{
+		let busy = false;
+		busy = craftUpgrades();
+
+		if (!busy)
+		{
+			busy = craftCompounds();
+		}
+
+		if (busy)
+		{
+			setState("Exchanging", false);
+        }
+
+		if (!busy)
+		{
+			busy = exchangeSeashells();
+		}
+
+		if (!busy)
+		{
+			busy = exchangeCandies();
+		}
+	}
+}
+
 function exchangeCandies()
 {
 	if (smart.moving)
@@ -174,6 +220,11 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				return;
 			}
 
+			if (character.q.exchange)
+			{
+				return;
+            }
+
 			let item = character.items[locate_item_greatest_quantity(itemName)];
 
 			if (!item || (item && item.q < minExchange))
@@ -189,48 +240,8 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 			{
 				exchangeItems(npcName, itemName, minExchange, onComplete);
 			}
-		}, 5000);
+		}, 1000);
 	});
-}
-
-function townInterval()
-{
-	if (is_moving(character) || smart.moving)
-	{
-		parent.close_merchant();
-	} 
-	else if (!parent.stand && !is_moving(character) && !smart.moving)
-	{
-		parent.open_merchant(locate_item("stand0"));
-	}
-	
-	if(!isInTown())
-	{
-		return;
-	}
-
-	sellVendorTrash();
-
-	if (!character.q.upgrade && !character.q.compound && !smart.moving)
-	{
-		let busy = false;
-		busy = craftUpgrades();
-
-		if (!busy)
-		{
-			busy = craftCompounds();
-        }
-
-		if (!busy)
-		{
-			busy = exchangeSeashells();
-		}
-
-		if (!busy)
-		{
-			busy = exchangeCandies();
-		}
-	}
 }
 
 function checkMluck(target)

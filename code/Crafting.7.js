@@ -133,7 +133,7 @@ function craftCompound(levelToUse)
 	}
 	else
 	{
-		return false;		
+		return false;
 	}
 }
 
