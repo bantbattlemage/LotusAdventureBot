@@ -707,7 +707,7 @@ function locate_item_greatest_quantity(name)
 
 	for (var i = 0; i < character.items.length; i++)
 	{
-		if (character.items[i] && character.items[i].name === name && ((location != -1 && character.items[location].q < character.items[i].q) || location == -1))
+		if (character.items[i] && character.items[i].name === name && (location === -1 || (location != -1 && character.items[location].q < character.items[i].q)))
 		{
 			location = i;
 		}
