@@ -141,7 +141,7 @@ function townInterval()
 			busy = craftCompounds();
 		}
 
-		if (busy)
+		if (busy && getState("Exchanging"))
 		{
 			setState("Exchanging", false);
         }
