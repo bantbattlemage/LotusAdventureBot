@@ -6,13 +6,22 @@
 	"HoldItems": ["tracker", "hpot1", "mpot1"],
 	"Party": [],
 	"LowInventory": 14,
+	"ServerRegion": "US",
+	"ServerID": "II",
 };
+
 let State = {};
 let Intervals = {};
 let Flags = {};
 
 function startBotCore(settings)
 {
+	//	check for correct server
+	if (server.region != Settings["ServerRegion"] || server.id != Settings["ServerID"])
+	{
+		change_server(Settings["ServerRegion"], Settings["ServerID"]);
+	}
+
 	game.on("stateChanged", onStateChanged);
 	game.on("idle", onIdle);
 	game.on("death", onDeath);

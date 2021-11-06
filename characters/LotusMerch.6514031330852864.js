@@ -25,6 +25,8 @@ function loadCharacter()
 			"firestaff": 5,
 			"mushroomstaff":7,
 			"hbow":7,
+			"t2bow": 7,
+			"firebow": 5
 		};
 	let compoundList =
 		{
@@ -32,8 +34,9 @@ function loadCharacter()
 			"dexearring": defaultCompoundLevel,
 			"strearring": defaultCompoundLevel,
 			"wbook0": 3,
-			"skullamulet": 2,
-			"lantern": 1
+			"skullamulet": 1,
+			"lantern": 1,
+			"jacko": 1
 		};
 	let pontyList = 
 		[

@@ -1,6 +1,6 @@
 ﻿let VendorTrash =
 [
-	"stinger", "beewings", "poison", "sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing", "phelmet"
+		"stinger", "beewings", "poison", "sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing", "phelmet", "throwingstars", "spear"
 ];
 
 function craftUpgrades()
@@ -19,6 +19,25 @@ function craftUpgrades()
 	return upgrading;
 }
 
+function massProduction()
+{
+	if (character.ctype != "merchant")
+	{
+		return false;
+	}
+
+	if (character.mp < G.skills.massproduction.mp || is_on_cooldown("massproduction"))
+	{
+		usePotions();
+	}
+	else
+	{
+		use_skill("massproduction");
+		reduce_cooldown("massproduction", character.ping);
+		usePotions();
+	}
+}
+
 function craftUpgrade(targetUpgradeLevel)
 {
 	for (let i = 0; i < character.items.length; i++)
@@ -28,6 +47,8 @@ function craftUpgrade(targetUpgradeLevel)
 		if (item && item.level < targetUpgradeLevel && Settings["UpgradeList"][item.name] && item.level < Settings["UpgradeList"][item.name] && !isShiny(item))
 		{
 			log("Upgrading " + G.items[item.name].name + "...");
+
+			massProduction();
 
 			let scroll = "scroll0";
 			if ((item.level > 1 && item.tier > 1) || item.level >= G.items[item.name].grades[0] || item.level >= 6)
@@ -122,6 +143,7 @@ function craftCompound(levelToUse)
 	if (item > -1 && scrollToUse > -1)
 	{
 		log("Compounding three +" + levelToUse + " " + G.items[foundItem].name + "...");
+		massProduction();
 		compound(triple[0], triple[1], triple[2], scrollToUse);
 		return true;
 	} 

@@ -23,7 +23,7 @@
 		for (let e in parent.entities)
 		{
 			let entity = parent.entities[e];
-			if (character.mana >= 10 && entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck"))
+			if (character.mp >= 10 && entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck"))
 			{
 				log("Mlucking " + entity.name);
 				use_skill("mluck", entity);
@@ -160,9 +160,70 @@ function townInterval()
 
 		if (!busy)
 		{
-			busy = exchangeCandies();
+			busy = exchangeEmeralds();
 		}
+
+		if (!busy)
+		{
+			busy = exchangeArmorWeaponBoxes();
+		}
+
+		//	enable for Halloween
+		//if (!busy)
+		//{
+		//	busy = exchangeCandies();
+		//}
 	}
+}
+
+function exchangeArmorWeaponBoxes()
+{
+	if (smart.moving)
+	{
+		return false;
+	}
+
+	let box = character.items[locate_item_greatest_quantity("armorbox")];
+
+	if (!box)
+	{
+		box = character.items[locate_item_greatest_quantity("weaponbox")];
+	}
+
+	if (!box)
+	{
+		return false;
+	}
+
+	writeToLog("Exchanging " + box.name + "...");
+	exchangeItems("exchange", box.name, 1);
+
+	return true;
+}
+
+function exchangeEmeralds()
+{
+	if (smart.moving)
+	{
+		return false;
+	}
+
+	let emeralds = character.items[locate_item_greatest_quantity("gem0")];
+
+	if (!emeralds)
+	{
+		emeralds = character.items[locate_item_greatest_quantity("gem0")];
+	}
+
+	if (!emeralds)
+	{
+		return false;
+	}
+
+	writeToLog("Exchanging emeralds...");
+	exchangeItems("exchange", emeralds.name, 1);
+
+	return true;
 }
 
 function exchangeCandies()
@@ -176,11 +237,16 @@ function exchangeCandies()
 
 	if (!candies)
 	{
+		candies = character.items[locate_item_greatest_quantity("candy0")];
+	}
+
+	if (!candies)
+	{
 		return false;
 	}
 
 	writeToLog("Exchanging candies...");
-	exchangeItems("exchange", "candy1", 1);
+	exchangeItems("exchange", candies.name, 1);
 
 	return true;
 }

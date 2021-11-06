@@ -20,9 +20,32 @@ function loadCharacter()
 	Flags["Farming"] = true;
 }
 
-function characterCombat()
+function characterCombat(target)
 {
-	return castEnergize();
+	if (castEnergize())
+	{
+		return true;
+	}
+
+	if (castScare(target))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+function castScare(target)
+{
+	if (character.mp < G.skills.scare.mp || is_on_cooldown("scare") || !is_in_range(target, "scare") || !target)
+	{
+		return false;
+	}
+
+	use_skill("scare", target);
+	reduce_cooldown("scare", character.ping);
+
+	return true;
 }
 
 function castEnergize()
