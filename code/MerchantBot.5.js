@@ -245,7 +245,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 				log("Exchanging " + name);
 				exchange(item);
 
-				exchangeItems(npcName, name, minExchange, onComplete);
+				exchangeItems(npcName, item, minExchange, onComplete);
 			}
 
 		}, 1000);
