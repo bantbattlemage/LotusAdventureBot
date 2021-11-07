@@ -18,7 +18,7 @@ function load_file(fileName)
 
 if (parent.caracAL)
 {
-	parent.caracAL.load_scripts(["code/Logging.2.js", "code/BotComms.3.js", "code/StandardBot.4.js", "code/MerchantBot.5.js", "code/Crafting.6.js", "code/Positioning.7.js"]).then(() =>
+	parent.caracAL.load_scripts(["code/Logging.2.js", "code/BotComms.3.js", "code/StandardBot.4.js", "code/MerchantBot.5.js", "code/Positioning.6.js", "code/Crafting.7.js"]).then(() =>
 	{
 		let path = "characters/" + character.name + "." + characterSlotIDs[character.name] + ".js";
 
