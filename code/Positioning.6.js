@@ -5,7 +5,7 @@
 		return;
 	}
 	
-	if (get_targeted_monster() /*Settings["PriorityTargets"].includes(get_targeted_monster().mtype)*/)
+	if (get_targeted_monster() && Flags["Kiting"] === false)
 	{
 		return;
 	}

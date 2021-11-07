@@ -16,6 +16,7 @@ function loadCharacter()
 			"pants": defaultUpgradeLevel,
 			"helmet": defaultUpgradeLevel,
 			"gloves": defaultUpgradeLevel,
+			"wshield": defaultUpgradeLevel,
 			"coat1": 7,
 			"shoes1": 7,
 			"pants1": 7,
@@ -26,13 +27,16 @@ function loadCharacter()
 			"mushroomstaff":7,
 			"hbow":7,
 			"t2bow": 7,
-			"firebow": 5
+			"firebow": 5,
 		};
 	let compoundList =
 		{
 			"intearring": defaultCompoundLevel,
 			"dexearring": defaultCompoundLevel,
 			"strearring": defaultCompoundLevel,
+			"hpbelt": defaultCompoundLevel,
+			"vitring": defaultCompoundLevel,
+			"vitearring": defaultCompoundLevel,
 			"wbook0": 3,
 			"skullamulet": 1,
 			"lantern": 1,

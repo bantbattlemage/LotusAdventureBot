@@ -23,11 +23,10 @@
 		for (let e in parent.entities)
 		{
 			let entity = parent.entities[e];
-			if (character.mp >= 10 && entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck"))
+			if (character.mp >= 10 && entity && entity.player && !entity.npc && !checkMluck(entity) && is_in_range(entity, "mluck") && entity.ctype != "merchant")
 			{
 				log("Mlucking " + entity.name);
 				use_skill("mluck", entity);
-				usePotions();
 			}
 		}
 		
@@ -329,7 +328,7 @@ function exchangeItems(npcName, itemName, minExchange, onComplete)
 function checkMluck(target)
 {
 	let mLuckDuration = 3600000;
-	return target.s.mluck && target.s.mluck.ms > mLuckDuration * 0.25;
+	return (target.s.mluck && target.s.mluck.ms > mLuckDuration * 0.25);
 }
 
 async function enterTownMode()
@@ -432,8 +431,10 @@ function deliverTo(deliverToName, data, deliverFunction)
 				approach(target);
             }
 
-			if (target && distance(character, target) < 100 && !smart.moving)
+			if (target && distance(character, target) < 200)
 			{
+				stop();
+
 				deliverFunction();
 				
 				Flags["DeliverTarget"] = null;
@@ -442,8 +443,7 @@ function deliverTo(deliverToName, data, deliverFunction)
 				Intervals["Deliver"] = null;
 				return;
 			}
-
-			if (!is_moving(character) && !smart.moving && !target)
+			else if (!is_moving(character) && !smart.moving && !target)
 			{
 				stop();
 				travelTo(data.location.map, data.location.position);

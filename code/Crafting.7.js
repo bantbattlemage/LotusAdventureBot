@@ -1,6 +1,7 @@
 ﻿let VendorTrash =
 [
-		"stinger", "beewings", "poison", "sstinger", "ringsj", "cclaw", "crabclaw", "hpamulet", "hpbelt", "vitring", "vitearring", "vitscroll", "bwing", "phelmet", "throwingstars", "spear"
+		"stinger", "beewings", "poison", "sstinger", "ringsj", "cclaw", "crabclaw", "bwing", "phelmet", "throwingstars", "spear", "hpamulet",
+//"hpbelt", "vitring", "vitearring", "vitscroll",*/
 ];
 
 function craftUpgrades()

@@ -12,10 +12,7 @@ function initBotComms()
 	
 	//commsInterval = setInterval(commsLoop, 1000);
 
-	if (Settings["PartyLeader"])
-	{
-		sendPartyInvites();
-    }
+	sendPartyInvites();
 }
 
 function commsLoop()
@@ -260,6 +257,18 @@ function reloadCharacter(name)
 	{
 		command_character(name, "say(\"/pure_eval setTimeout(()=>{start_runner()}, 500)\")");
 		command_character(name, "say(\"/pure_eval stop_runner();\")");
+	}
+}
+
+function sendAllToTown()
+{
+	for (let i = 0; i < parent.X.characters.length; i++)
+	{
+		let name = parent.X.characters[i].name;
+		if (name !== character.name && get_active_characters()[name])
+		{
+			command_character(name, "say(\"/pure_eval goToTown();\")");
+		}
 	}
 }
 

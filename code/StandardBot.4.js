@@ -7,7 +7,7 @@
 	"Party": [],
 	"LowInventory": 14,
 	"ServerRegion": "US",
-	"ServerID": "II",
+	"ServerID": "I",
 };
 
 let State = {};
@@ -27,6 +27,8 @@ function startBotCore(settings)
 	game.on("death", onDeath);
 	game.on("level_up", onLevelUp);
 
+	Flags["Kiting"] = false;
+
 	loadSettings(settings);
 	initBotComms();
 
@@ -41,17 +43,6 @@ function startBotCore(settings)
 			}
 
 			loot();
-
-		}, 500);
-
-		Intervals["UsePotions"] = setInterval(() =>
-		{
-			if (character.rip)
-			{
-				return;
-			}
-
-			usePotions();
 
 		}, 500);
 
@@ -85,6 +76,17 @@ function startBotCore(settings)
 	}
 
 	//	Intervals for all bots
+
+	Intervals["UsePotions"] = setInterval(() =>
+	{
+		if (character.rip)
+		{
+			return;
+		}
+
+		usePotions();
+
+	}, 250);
 
 	Intervals["IdleCheck"] = setInterval(() =>
 	{
@@ -151,6 +153,7 @@ function onDeath(data)
 		writeToLog(data.id + " died!");
 
 		stopCombatInterval();
+		setState("Idle");
 
 		Intervals["Respawn"] = setInterval(() =>
 		{
@@ -411,10 +414,10 @@ function usePotions()
 		return;
 	}
 
-	let hPotRecovery = 400;//G.items[Potions[0]].gives.hp;
-	let mPotRecovery = 500;//G.items[Potions[1]].gives.mp;
+	let hPotRecovery = 100;//G.items[Potions[0]].gives.hp;
+	let mPotRecovery = 100;//G.items[Potions[1]].gives.mp;
 
-	if ((character.hp <= (character.max_hp - hPotRecovery) || character.mp <= (character.max_mp - mPotRecovery)) || getState("Idle"))
+	if ((character.hp <= (character.max_hp - hPotRecovery) || character.mp <= (character.max_mp - mPotRecovery)))
 	{
 		use_hp_or_mp();
 	}
@@ -432,15 +435,11 @@ function startCombatInterval()
 
 	Intervals["Combat"] = setInterval(() =>
 	{
-		let target = findPriorityTarget();
-
 		positionRoutine();
 
-		if (!target)
-		{
-			target = findTarget(Settings["FarmMonster"]);
-		}
-		else if (!is_in_range(target, "attack"))
+		let target = findCombatTarget();
+
+		if (!is_in_range(target, "attack"))
 		{
 			approach(target);
 		}
@@ -456,7 +455,31 @@ function startCombatInterval()
 			}
 		}
 
-	}, 100);
+	}, 200);
+}
+
+function findCombatTarget()
+{
+	let target = findPriorityTarget();
+
+	if (!target && Flags["Target"] != null)
+	{
+		target = findTarget(Flags["Target"].mtype);
+	}
+
+	if (!target)
+	{
+		target = findTarget(Settings["FarmMonster"]);
+	}
+
+	if (target != null && target.rip)
+	{
+		target = null;
+	}
+
+	Flags["Target"] = target;
+
+	return target;
 }
 
 function stopCombatInterval()
@@ -467,7 +490,7 @@ function stopCombatInterval()
 
 function autoAttack(target)
 {
-	if (!target || character.mp < character.mp_cost)
+	if (!target || character.mp < character.mp_cost || target.rip)
 	{
 		return false;
 	}
@@ -528,11 +551,11 @@ function approach(target)
 
 function findPriorityTarget()
 {
-	let currentTarget = get_nearest_monster({ target: character });
-	if (currentTarget)
-	{
-		return currentTarget;
-	}
+	//let currentTarget = get_nearest_monster({ target: character });
+	//if (currentTarget)
+	//{
+	//	return currentTarget;
+	//}
 
 	for (let index in Settings["PriorityTargets"])
 	{
@@ -619,10 +642,13 @@ function travelTo(map, coords = null, onComplete = () => { })
 	{
 		if (coords != null)
 		{
-			smart_move(coords, map, () =>
+			smart_move(map, () =>
 			{
-				setState("Traveling", false);
-				onComplete();
+				smart_move(coords, () =>
+				{
+					setState("Traveling", false);
+					onComplete();
+				});
 			});
 		}
 		else

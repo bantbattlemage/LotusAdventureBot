@@ -10,6 +10,9 @@ function loadCharacter()
 		"FarmMap": "main",
 		"FarmMonster": "crabx",
 		"FarmSpawn": 5,
+		//"FarmMap": "tunnel",
+		//"FarmMonster": "mole",
+		//"FarmSpawn": 8,
 		"PriorityTargets": ["phoenix","goldenbat"],
 		"Party": ["LotusRanger", "RangerLotus", "LotusMage", "LotusMerch"],
 		"TetherRadius": 100,
@@ -18,6 +21,7 @@ function loadCharacter()
 
 	startBotCore(settings);
 	Flags["Farming"] = true;
+/*	Flags["Kiting"] = true;*/
 }
 
 function characterCombat(target)
@@ -32,6 +36,10 @@ function characterCombat(target)
 		return true;
 	}
 
+	if (castReflection())
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -48,38 +56,78 @@ function castScare(target)
 	return true;
 }
 
-function castEnergize()
+function castReflection()
 {
-	if (is_on_cooldown("energize"))
+	if (character.mp < G.skills.reflection.mp || is_on_cooldown("reflection"))
 	{
 		return false;
 	}
 
-	let energizeTarget = null;
+	let target = null;
 
 	for (let i = 0; i < EnergizeRotation.length; i++)
 	{
-		energizeTarget = parent.entities[EnergizeRotation[EnergizeTick]];
+		target = parent.entities[EnergizeRotation[EnergizeTick]];
 		EnergizeTick++;
 		if (EnergizeTick >= EnergizeRotation.length)
 		{
 			EnergizeTick = 0;
 		}
 
-		if (energizeTarget != null)
+		if (target != null && !target.rip)
 		{
 			break;
 		}
 	}
 
-	if (energizeTarget === null)
+	if (target === null)
+	{
+		return false;
+	}
+
+	if (target && !target.s.reflection && is_in_range(target, "reflection"))
+	{
+		use_skill("reflection", target);
+		reduce_cooldown("reflection", character.ping);
+
+		return true;
+	}
+
+	return false;
+}
+
+function castEnergize()
+{
+	if (character.mp < G.skills.energize.mp || is_on_cooldown("reflection"))
+	{
+		return false;
+	}
+
+	let target = null;
+
+	for (let i = 0; i < EnergizeRotation.length; i++)
+	{
+		target = parent.entities[EnergizeRotation[EnergizeTick]];
+		EnergizeTick++;
+		if (EnergizeTick >= EnergizeRotation.length)
+		{
+			EnergizeTick = 0;
+		}
+
+		if (target != null && !target.rip)
+		{
+			break;
+		}
+	}
+
+	if (target === null)
 	{
 		return false;
     }
 
-	if (energizeTarget && !energizeTarget.s.energized && is_in_range(energizeTarget, "energize"))
+	if (target && !target.s.energized && is_in_range(target, "energize"))
 	{
-		use_skill("energize", energizeTarget);
+		use_skill("energize", target);
 		reduce_cooldown("energize", character.ping);
 
 		return true;

@@ -7,7 +7,12 @@ function loadCharacter()
 		"FarmMap": "main",
 		"FarmMonster": "crabx",
 		"FarmSpawn": 5,
-		"PriorityTargets": ["phoenix","goldenbat"],
+		//"FarmMap": "tunnel",
+		//"FarmMonster": "mole",
+		//"FarmSpawn": 8,
+		"PriorityTargets": ["phoenix", "goldenbat"],
+		//"Avoid": ["bigbird"],
+		"Avoid": ["bigbird", "mole"],
 		"Party": ["LotusRanger", "RangerLotus", "LotusMage", "LotusMerch"],
 		"TetherRadius": 100,
 		"VendorTrash": VendorTrash
@@ -15,6 +20,7 @@ function loadCharacter()
 	
 	startBotCore(settings);
 	Flags["Farming"] = true;
+/*	Flags["Kiting"] = true;*/
 }
 
 function characterCombat(target)
@@ -56,12 +62,33 @@ function useThreeShot(target, avoidTargets = [])
 	}
 
 	let targets = [];
+
+	targets.push(target);
+
+	for (let p of Settings["Party"])
+	{
+		if (p !== character.name)
+		{
+			let partyMember = parent.entities[p];
+
+			if (partyMember)
+			{
+				let t = get_nearest_monster({ type: target.mtype, target: p });
+
+				if (t && is_in_range(t, "attack"))
+				{
+					targets.push(t);
+				}
+            }
+		}
+	}
+
 	for (let e in parent.entities)
 	{
 		let t = parent.entities[e];
 		if (((t.level > 1 && target.mtype === t.mtype) || avoidTargets.includes(t.mtype) || Settings["PriorityTargets"].includes(t.mtype)) && is_in_range(t, "attack"))
 		{
-			return false;
+			//return false;
 		} 
 		else if (target.mtype === t.mtype && is_in_range(t, "attack"))
 		{

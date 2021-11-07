@@ -7,8 +7,12 @@ function loadCharacter()
 		"FarmMap": "main",
 		"FarmMonster": "crabx",
 		"FarmSpawn": 5,
-		"PriorityTargets": ["phoenix","goldenbat"],
-		"Avoid": ["bigbird"],
+		//"FarmMap": "tunnel",
+		//"FarmMonster": "mole",
+		//"FarmSpawn": 8,
+		"PriorityTargets": ["phoenix", "goldenbat"],
+		//"Avoid": ["bigbird"],
+		"Avoid": ["bigbird", "mole"],
 		"Party":["LotusRanger","RangerLotus","LotusMage","LotusMerch"],
 		"TetherRadius": 100,
 		"VendorTrash": VendorTrash
@@ -17,4 +21,5 @@ function loadCharacter()
 	startBotCore(settings);
 	load_code("RangerLotus");
 	Flags["Farming"] = true;
+/*	Flags["Kiting"] = true;*/
 }
