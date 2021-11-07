@@ -68,9 +68,12 @@ function loadCharacter()
 	
 	startBotCore(settings);
 	startMerchantBot();
-	
-	Intervals["Reload"] = setInterval(()=>
+
+	if (!parent.caracAL)
 	{
-		loadAllRunners();
-	}, 10000);
+		Intervals["Reload"] = setInterval(() =>
+		{
+			loadAllRunners();
+		}, 10000);
+    }
 }
