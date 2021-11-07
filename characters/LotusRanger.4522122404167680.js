@@ -18,8 +18,19 @@ function loadCharacter()
 		"VendorTrash": VendorTrash
 	};
 
-	startBotCore(settings);
-	load_code("RangerLotus");
 	Flags["Farming"] = true;
-/*	Flags["Kiting"] = true;*/
+	Flags["Kiting"] = false;
+
+	if (parent.caracAL)
+	{
+		parent.caracAL.load_scripts(["RangerLotus.js"]).then(() =>
+		{
+			startBotCore(settings);
+		});
+	}
+	else
+	{
+		startBotCore(settings);
+		load_code("RangerLotus");
+    }
 }

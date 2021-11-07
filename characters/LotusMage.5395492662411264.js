@@ -21,7 +21,7 @@ function loadCharacter()
 
 	startBotCore(settings);
 	Flags["Farming"] = true;
-/*	Flags["Kiting"] = true;*/
+	Flags["Kiting"] = false;
 }
 
 function characterCombat(target)

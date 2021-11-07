@@ -519,13 +519,8 @@ function autoAttack(target)
 
 function approach(target)
 {
-	if (is_moving(character) || smart.moving || !target)
+	if (!target || is_moving(character) || smart.moving || target.rip)
 	{
-		if (!target)
-		{
-			writeToLog(character.name + " attempted to appraoch a non-present target");
-		}
-
 		return;
 	}
 
@@ -536,7 +531,7 @@ function approach(target)
 		adjustment.x = character.x + (target.x - character.x) * 0.3;
 		adjustment.y = character.y + (target.y - character.y) * 0.3;
 
-		if (distance(character, adjustment) < character.range && can_move_to(adjustment.x, adjustment.y))
+		if (distance(character, adjustment) < 200 && can_move_to(adjustment.x, adjustment.y))
 		{
 			stop();
 			move(adjustment.x, adjustment.y);
@@ -551,12 +546,6 @@ function approach(target)
 
 function findPriorityTarget()
 {
-	//let currentTarget = get_nearest_monster({ target: character });
-	//if (currentTarget)
-	//{
-	//	return currentTarget;
-	//}
-
 	for (let index in Settings["PriorityTargets"])
 	{
 		let name = Settings["PriorityTargets"][index];
@@ -638,7 +627,7 @@ function travelTo(map, coords = null, onComplete = () => { })
 	stop();
 	setState("Traveling");
 
-	if (character.map !== map)
+	if (character.map != map)
 	{
 		if (coords != null)
 		{
