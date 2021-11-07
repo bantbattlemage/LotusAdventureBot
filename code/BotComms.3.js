@@ -1,7 +1,4 @@
-﻿const SentMessages = {};
-const RecievedMessages = {};
-const WhiteList = [];
-let commsInterval;
+﻿const WhiteList = [];
 
 function initBotComms()
 {
@@ -10,15 +7,7 @@ function initBotComms()
 		WhiteList.push(x);
 	});
 	
-	//commsInterval = setInterval(commsLoop, 1000);
-
 	sendPartyInvites();
-}
-
-function commsLoop()
-{
-	checkSentMessages();
-	checkRecievedMessages();
 }
 
 function on_cm(sender, data)
@@ -37,15 +26,6 @@ function on_cm(sender, data)
 	}
 
 	game.trigger("codeMessage", {sender:sender, data:data});
-	
-	// if (!RecievedMessages[sender])
-	// {
-	// 	RecievedMessages[sender] = [data];
-	// } 
-	// else
-	// {
-	// 	RecievedMessages[sender].push(data);
-	// }
 	
 	switch (data.message)
 	{
@@ -96,70 +76,6 @@ function sendCodeMessage(recipient, data)
 	}
 	
 	send_cm(recipient, data);
-
-	// if(!SentMessages[recipient])
-	// {
-	// 	SentMessages[recipient] = [data];
-	// }
-	// else
-	// {
-	// 	SentMessages[recipient].push(data);
-	// }
-}
-
-function checkIfMessageSent(recipient, message)
-{
-	if(SentMessages[recipient])
-	{
-		for (let data of SentMessages[recipient])
-		{
-			if (data.message === message)
-			{
-				return true;
-			}
-		}		
-	}
-	
-	return false;
-}
-
-function checkIfMessageRecieved(message)
-{
-	for (let sender in RecievedMessages)
-	{
-		for (let data of sender)
-		{
-			if(data.message === message)
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
-function checkSentMessages()
-{
-	for(let recipient in SentMessages)
-	{
-		for(let data of recipient)
-		{
-			
-		}
-	}
-}
-
-function checkRecievedMessages()
-{
-	for(let sender in RecievedMessages)
-	{
-		for (let data of sender)
-		{
-
-		}
-	}
 }
 
 function getOnlineCharacters()
@@ -198,7 +114,7 @@ function requestMerchant(message)
 	
 	if(merchant)
 	{
-		sendCodeMessage(merchant.name, message);		
+		sendCodeMessage(merchant.name, message);
 		return true;
 	}
 	else
