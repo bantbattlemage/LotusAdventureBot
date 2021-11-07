@@ -23,7 +23,7 @@ function loadCharacter()
 
 	if (parent.caracAL)
 	{
-		parent.caracAL.load_scripts(["RangerLotus.js"]).then(() =>
+		parent.caracAL.load_scripts(["characters/RangerLotus.6290619425619968.js"]).then(() =>
 		{
 			startBotCore(settings);
 		});
