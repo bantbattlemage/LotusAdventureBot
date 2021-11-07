@@ -13,7 +13,6 @@ function loadCharacter()
 		"PriorityTargets": ["phoenix", "goldenbat"],
 		//"Avoid": ["bigbird"],
 		"Avoid": ["bigbird", "mole"],
-		"Party":["LotusRanger","RangerLotus","LotusMage","LotusMerch"],
 		"TetherRadius": 100,
 		"VendorTrash": VendorTrash
 	};

@@ -5,9 +5,9 @@ let commsInterval;
 
 function initBotComms()
 {
-	parent.X.characters.forEach((x)=>
+	Settings["Party"].forEach((x)=>
 	{
-		WhiteList.push(x.name);
+		WhiteList.push(x);
 	});
 	
 	//commsInterval = setInterval(commsLoop, 1000);
@@ -50,7 +50,7 @@ function on_cm(sender, data)
 	switch (data.message)
 	{
 		case "party":
-			if (parent.party_list.length > 1)
+			if (parent.party_list.length > 1 && Settings["PartyLeader"])
 			{
 				send_party_invite(sender);
 			}
@@ -70,7 +70,7 @@ function on_party_invite(inviter)
 		{
 			accept_party_invite(inviter);
 		}
-		else if(Settings["Party"].includes(inviter) && Settings["PartyLeader"] == true)
+		else if(Settings["Party"].includes(inviter) && Settings["PartyLeader"])
 		{
 			send_party_invite(inviter);
 		}
@@ -210,6 +210,11 @@ function requestMerchant(message)
 
 function sendPartyInvites()
 {
+	if (!Settings["PartyLeader"])
+	{
+		return;
+    }
+
 	for(let index in Settings["Party"])
 	{
 		let name = Settings["Party"][index];

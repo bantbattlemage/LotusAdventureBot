@@ -4,7 +4,7 @@
 	"LowPotionThreshold": 100,
 	"Wallet": 250000,
 	"HoldItems": ["tracker", "hpot1", "mpot1"],
-	"Party": [],
+	"Party": ["LotusMerch","LotusRanger","RangerLotus","LotusMage"],
 	"LowInventory": 14,
 	"ServerRegion": "US",
 	"ServerID": "I",
