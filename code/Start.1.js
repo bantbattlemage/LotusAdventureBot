@@ -1,4 +1,11 @@
-﻿
+﻿let characterSlotIDs =
+{
+	"LotusMage": "5395492662411264",
+	"LotusMerch": "6514031330852864",
+	"LotusRanger": "4522122404167680",
+	"RangerLotus": "6290619425619968",
+};
+
 function load_file(fileName)
 {
 	const fs = require('fs')
@@ -11,10 +18,11 @@ function load_file(fileName)
 
 if (parent.caracAL)
 {
-	parent.caracAL.load_scripts(["Logging.js", "BotComms.js", "StandardBot.js", "MerchantBot.js", "Crafting.js", "Positioning.js"]).then(() =>
+	parent.caracAL.load_scripts(["code/Logging.2.js", "code/BotComms.3.js", "code/StandardBot.4.js", "code/MerchantBot.5.js", "code/Crafting.6.js", "code/Positioning.7.js"]).then(() =>
 	{
-		let n = character.name + ".js";
-		parent.caracAL.load_scripts([n]).then(() =>
+		let path = "characters/" + character.name + "." + characterSlotIDs[character.name] + ".js";
+
+		parent.caracAL.load_scripts([path]).then(() =>
 		{
 			loadCharacter();
 		});
