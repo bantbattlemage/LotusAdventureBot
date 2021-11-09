@@ -34,7 +34,6 @@ function loadCharacter()
 			"intearring": defaultCompoundLevel,
 			"dexearring": defaultCompoundLevel,
 			"strearring": defaultCompoundLevel,
-			"hpbelt": defaultCompoundLevel,
 			"vitring": defaultCompoundLevel,
 			"vitearring": defaultCompoundLevel,
 			"wbook0": 3,
