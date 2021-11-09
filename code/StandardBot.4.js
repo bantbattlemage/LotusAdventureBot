@@ -136,6 +136,13 @@ function onStateChanged(newState)
 
 function onIdle()
 {
+	if (character.rip)
+	{
+		stopCombatInterval();
+		respawn();
+		return;
+    }
+
 	if (Flags["Farming"])
 	{
 		beginFarming();
