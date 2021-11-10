@@ -39,6 +39,7 @@ function startBotCore(settings)
 		{
 			if (character.rip)
 			{
+				respawn();
 				return;
 			}
 
@@ -50,6 +51,7 @@ function startBotCore(settings)
 		{
 			if (character.rip)
 			{
+				respawn();
 				return;
 			}
 
@@ -60,6 +62,12 @@ function startBotCore(settings)
 
 		Intervals["InventoryManagement"] = setInterval(() =>
 		{
+			if (character.rip)
+			{
+				respawn();
+				return;
+            }
+			
 			let merchant = getOnlineMerchant();
 
 			if (get_player(merchant.name))
@@ -81,6 +89,7 @@ function startBotCore(settings)
 	{
 		if (character.rip)
 		{
+			respawn();
 			return;
 		}
 
@@ -113,6 +122,11 @@ function startBotCore(settings)
 	log(character.name + " StandardBot loaded!");
 
 	setState("Idle");
+
+	if (character.rip)
+	{
+		respawn();
+	}
 }
 
 function onStateChanged(newState)
@@ -160,21 +174,22 @@ function onDeath(data)
 		writeToLog(data.id + " died!");
 
 		stopCombatInterval();
-		setState("Idle");
 
-		Intervals["Respawn"] = setInterval(() =>
-		{
-			if (character.rip)
-			{
-				respawn();
-			}
-			else
-			{
-				setState("Idle");
-				clearInterval(Intervals["Respawn"]);
-				Intervals["Respawn"] = null;
-			}
-		}, 1000);
+		respawn();
+
+		//Intervals["Respawn"] = setInterval(() =>
+		//{
+		//	if (character.rip)
+		//	{
+		//		respawn();
+		//	}
+		//	else
+		//	{
+		//		setState("Idle");
+		//		clearInterval(Intervals["Respawn"]);
+		//		Intervals["Respawn"] = null;
+		//	}
+		//}, 1000);
 
 		setState("Dead");
 	}
